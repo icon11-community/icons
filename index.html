@@ -216,7 +216,7 @@
         }
 
         #search-container.shifted {
-            margin-right: 60px; 
+            margin-right: 60px;
         }
         #scroll-to-top-btn {
             position: fixed;
@@ -284,6 +284,8 @@
         let currentPage = 0;
         const iconsPerPage = 48;
         let currentDetailsElement = null;
+        let currentSortOption = 'sort';
+        let currentSearchTerm = '';
 
         window.addEventListener('scroll', () => {
             const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
@@ -316,33 +318,39 @@
         }
 
         function filterIcons(searchTerm) {
-            const filteredIcons = iconsCache.filter(icon =>
+            currentSearchTerm = searchTerm;
+            let filteredIcons = iconsCache.filter(icon =>
                 formatIconName(icon.name).toLowerCase().includes(searchTerm.toLowerCase())
             );
+
+            filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
             currentPage = 0;
             displayIcons(filteredIcons, true);
         }
 
         function sortIcons(sortOption) {
-            let sortedIcons = [...iconsCache];
+            currentSortOption = sortOption;
+            let filteredIcons = iconsCache.filter(icon =>
+                formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase())
+            );
+            filteredIcons = sortIconsInternal(filteredIcons, sortOption);
+            currentPage = 0;
+            displayIcons(filteredIcons, true);
+        }
+
+        function sortIconsInternal(icons, sortOption) {
             switch (sortOption) {
                 case 'a-z':
-                    sortedIcons.sort((a, b) => formatIconName(a.name).localeCompare(formatIconName(b.name)));
-                    break;
+                    return icons.sort((a, b) => formatIconName(a.name).localeCompare(formatIconName(b.name)));
                 case 'z-a':
-                    sortedIcons.sort((a, b) => formatIconName(b.name).localeCompare(formatIconName(a.name)));
-                    break;
+                    return icons.sort((a, b) => formatIconName(b.name).localeCompare(formatIconName(a.name)));
                 case 'date-newest':
-                    sortedIcons.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    break;
+                    return icons.sort((a, b) => new Date(b.date) - new Date(a.date));
                 case 'date-oldest':
-                    sortedIcons.sort((a, b) => new Date(a.date) - new Date(b.date));
-                    break;
+                    return icons.sort((a, b) => new Date(a.date) - new Date(b.date));
                 default:
-                    break;
+                    return icons;
             }
-            currentPage = 0;
-            displayIcons(sortedIcons, true);
         }
 
         function debounce(func, delay) {
@@ -460,10 +468,11 @@
         window.addEventListener('scroll', () => {
             const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
             if (scrollTop + clientHeight >= scrollHeight - 48) {
-                const searchTerm = document.getElementById('search-bar').value;
-                const filteredIcons = iconsCache.filter(icon =>
-                    formatIconName(icon.name).toLowerCase().includes(searchTerm.toLowerCase())
+                let filteredIcons = iconsCache.filter(icon =>
+                    formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase())
                 );
+
+                filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
                 if ((currentPage + 1) * iconsPerPage < filteredIcons.length) {
                     currentPage++;
                     displayIcons(filteredIcons);
