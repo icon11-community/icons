@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Over 0+ icons Folder11 for Windows</title>
+    <title>Over 0 icons Folder11 for Windows</title>
     <link rel="icon" href="https://raw.githubusercontent.com/icon11-community/Folder11-Ico/main/ico/folder11.ico">
     <style>
         :root {
@@ -48,23 +48,48 @@
             background-color: var(--hover-color);
             transform: scale(1.1);
         }
-        #search-bar {
+        #search-container {
+            display: flex;
+            align-items: center;
             width: 100%;
             max-width: 400px;
-            padding: 10px;
             margin: 20px auto 0;
             background-color: var(--card-bg-color);
             border: 1px solid var(--card-border-color);
             border-radius: 6px;
-            color: var(--text-color);
-            font-size: 16px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #search-bar {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 14px;
         }
         #search-bar::placeholder {
             color: var(--secondary-text-color);
         }
+
+        #sort-select {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 12px;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            position: relative;
+        }
+
         main {
             padding: 20px;
+        }
+        .icon-name {
+            cursor: pointer;
         }
         .icon-list {
             display: grid;
@@ -107,12 +132,42 @@
             margin: 10px 0 5px;
             font-weight: 500;
         }
-        .icon-item span {
-            font-size: 12px;
-            color: var(--secondary-text-color);
+        .icon-item .details {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
         }
-        .icon-item:hover .download-icon {
-            opacity: 1;
+        .details-text {
+            color: #cfcfcf;
+            font-size: 13px;
+            flex: 0 1 auto;
+            margin-right: 3px;
+        }
+        .details-subcontainer {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            font-size: 13px;
+            line-height: 1.2;
+            margin-bottom: 3px;
+            color: #f0f0f0;
+        }
+        .details-value {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .details-value::before {
+            content:         '..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................';
+            color: #545454;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 3px;
+            flex-shrink: 1;
         }
         .skeleton-item {
             background-color: var(--card-bg-color);
@@ -156,6 +211,42 @@
             margin: 0 auto;
             border-radius: 4px;
         }
+        #search-container {
+            transition: margin-right 0.3s ease;
+        }
+
+        #search-container.shifted {
+            margin-right: 60px; 
+        }
+        #scroll-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--card-border-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            z-index: 1000; /* Ensure the button is always in front */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #scroll-to-top-btn:hover {
+            background-color: var(--hover-color);
+            color: var(--text-color);
+        }
+
+        #scroll-to-top-btn.show {
+            opacity: 1;
+        }
+
     </style>
 </head>
 <body>
@@ -166,7 +257,23 @@
             </svg>
         </a>
         <h1>Folder11 Community</h1>
+    <div id="search-container">
         <input type="text" id="search-bar" placeholder="Search icons...">
+        <select id="sort-select">
+            <option value="sort">Sort</option>
+            <option value="a-z">A-Z</option>
+            <option value="z-a">Z-A</option>
+            <option value="date-newest">Newest</option>
+            <option value="date-oldest">Oldest</option>
+        </select>
+    </div>
+
+    <button id="scroll-to-top-btn" title="Scroll to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
     </header>
     <main>
         <div id="icons-container" class="icon-list"></div>
@@ -176,6 +283,23 @@
         let iconsCache = [];
         let currentPage = 0;
         const iconsPerPage = 48;
+        let currentDetailsElement = null;
+
+        window.addEventListener('scroll', () => {
+            const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+            if (document.documentElement.scrollTop > 100) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+
+        document.getElementById('scroll-to-top-btn').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
 
         async function fetchIcons() {
             displaySkeletons(6);
@@ -199,6 +323,28 @@
             displayIcons(filteredIcons, true);
         }
 
+        function sortIcons(sortOption) {
+            let sortedIcons = [...iconsCache];
+            switch (sortOption) {
+                case 'a-z':
+                    sortedIcons.sort((a, b) => formatIconName(a.name).localeCompare(formatIconName(b.name)));
+                    break;
+                case 'z-a':
+                    sortedIcons.sort((a, b) => formatIconName(b.name).localeCompare(formatIconName(a.name)));
+                    break;
+                case 'date-newest':
+                    sortedIcons.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'date-oldest':
+                    sortedIcons.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                default:
+                    break;
+            }
+            currentPage = 0;
+            displayIcons(sortedIcons, true);
+        }
+
         function debounce(func, delay) {
             let timeout;
             return function (...args) {
@@ -206,7 +352,17 @@
                 timeout = setTimeout(() => func.apply(this, args), delay);
             };
         }
-
+        document.addEventListener('DOMContentLoaded', () => {
+            const sortSelect = document.getElementById('sort-select');
+            sortSelect.addEventListener('click', () => {
+                const options = sortSelect.querySelectorAll('option');
+                options.forEach(option => {
+                    option.style.backgroundColor = 'var(--card-bg-color)';
+                    option.style.color = 'var(--text-color)';
+                    option.style.padding = '10px';
+                });
+            });
+        });
         document.getElementById('search-bar').addEventListener(
             'input',
             debounce((e) => {
@@ -214,6 +370,18 @@
                 filterIcons(searchTerm);
             }, 300)
         );
+
+        document.getElementById('sort-select').addEventListener('change', (e) => {
+            const sortOption = e.target.value;
+            sortIcons(sortOption);
+        });
+
+        function formatIconCount(count) {
+            if (count >= 1000) {
+                return `${Math.floor(count / 1000)}k`;
+            }
+            return count.toString();
+        }
 
         function displayIcons(filteredIcons = iconsCache, replaceContent = false) {
             const container = document.getElementById('icons-container');
@@ -229,15 +397,34 @@
                     const iconItem = document.createElement('div');
                     iconItem.classList.add('icon-item');
                     iconItem.innerHTML = `
-                        <img src="${icon.url_icon}" alt="${formatIconName(icon.name)}">
-                        <p>${formatIconName(icon.name)}</p>
-                        <span>Size: ${(parseInt(icon.size) / (1024 * 1024)).toFixed(2)} MB</span>
+                        <img src="${icon.url_icon}" alt="${formatIconName(icon.name)}" draggable="false">
+                        <p class="icon-name">${formatIconName(icon.name)}</p>
+                        <div class="details">
+                            <div class="details-subcontainer">
+                                <span class="details-text">Size:</span>
+                                <span class="details-value">${(parseInt(icon.size) / (1024 * 1024)).toFixed(2)} MB</span>
+                            </div>
+                            <div class="details-subcontainer">
+                                <span class="details-text">Date:</span>
+                                <span class="details-value">${new Date(icon.date).toLocaleDateString()}</span>
+                            </div>
+                        </div>
                     `;
-                    iconItem.addEventListener('click', () => downloadIcon(icon.url_icon, icon.name));
+                    iconItem.querySelector('.icon-name').addEventListener('click', () => downloadIcon(icon.url_icon, icon.name));
+                    iconItem.addEventListener('click', () => showDetails(iconItem));
                     container.appendChild(iconItem);
                 });
                 clearSkeletons();
             }, 500);
+        }
+
+        function showDetails(iconItem) {
+            if (currentDetailsElement) {
+                currentDetailsElement.style.display = 'none';
+            }
+            const detailsElement = iconItem.querySelector('.details');
+            detailsElement.style.display = 'block';
+            currentDetailsElement = detailsElement;
         }
 
         function displaySkeletons(count) {
@@ -273,9 +460,13 @@
         window.addEventListener('scroll', () => {
             const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
             if (scrollTop + clientHeight >= scrollHeight - 48) {
-                if ((currentPage + 1) * iconsPerPage < iconsCache.length) {
+                const searchTerm = document.getElementById('search-bar').value;
+                const filteredIcons = iconsCache.filter(icon =>
+                    formatIconName(icon.name).toLowerCase().includes(searchTerm.toLowerCase())
+                );
+                if ((currentPage + 1) * iconsPerPage < filteredIcons.length) {
                     currentPage++;
-                    displayIcons();
+                    displayIcons(filteredIcons);
                 }
             }
         });
@@ -283,7 +474,7 @@
         function updatePageTitleAndMeta(totalIcons) {
             const searchBar = document.getElementById('search-bar');
             searchBar.placeholder = `Search ${totalIcons} icons`;
-            document.title = `Over ${totalIcons}+ icons Folder11 for Windows`;
+            document.title = `Over ${formatIconCount(totalIcons)} icons Folder11 for Windows`;
         }
 
         fetchIcons();
