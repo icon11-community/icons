@@ -419,7 +419,7 @@
                     iconItem.innerHTML = `
                         <div class="icon-image-container">
                             <img src="${icon.url_icon}" alt="${formatIconName(icon.name)}" draggable="false">
-                            ${icon.url_small_icon && icon.url_small_icon !== "" ? `<img src="${icon.url_small_icon}" alt="Small ${formatIconName(icon.name)}" class="small-image" draggable="false">` : ''}
+                            ${icon.small_svg_url !== "" ? `<img src="${icon.small_svg_url}" alt="Small ${formatIconName(icon.name)}" class="small-image" draggable="false">` : ''}
                         </div>
                         <p class="icon-name">${formatIconName(icon.name)}</p>
                         <div class="details">
