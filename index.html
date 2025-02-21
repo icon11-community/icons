@@ -406,38 +406,59 @@
         function displayIcons(filteredIcons = iconsCache, replaceContent = false) {
             const container = document.getElementById('icons-container');
             if (replaceContent) {
-                container.innerHTML = '';
+            container.innerHTML = '';
             }
             displaySkeletons(6);
             const start = currentPage * iconsPerPage;
             const end = start + iconsPerPage;
             const iconsToShow = filteredIcons.slice(start, end);
             setTimeout(() => {
-                iconsToShow.forEach(icon => {
-                    const iconItem = document.createElement('div');
-                    iconItem.classList.add('icon-item');
-                    iconItem.innerHTML = `
-                        <div class="icon-image-container">
-                            <img src="${icon.url_icon}" alt="${formatIconName(icon.name)}" draggable="false">
-                            ${icon.small_svg_url && icon.small_svg_url !== "" ? `<img src="${icon.small_svg_url}" alt="Small ${formatIconName(icon.name)}" class="small-image" draggable="false">` : ''}
-                        </div>
-                        <p class="icon-name">${formatIconName(icon.name)}</p>
-                        <div class="details">
-                            <div class="details-subcontainer">
-                                <span class="details-text">Size:</span>
-                                <span class="details-value">${(parseInt(icon.size) / (1024 * 1024)).toFixed(2)} MB</span>
-                            </div>
-                            <div class="details-subcontainer">
-                                <span class="details-text">Date:</span>
-                                <span class="details-value">${new Date(icon.date).toLocaleDateString()}</span>
-                            </div>
-                        </div>
-                    `;
-                    iconItem.querySelector('.icon-name').addEventListener('click', () => downloadIcon(icon.url_icon, icon.name));
-                    iconItem.addEventListener('click', () => showDetails(iconItem));
-                    container.appendChild(iconItem);
-                });
-                clearSkeletons();
+            iconsToShow.forEach(icon => {
+                const iconItem = document.createElement('div');
+                iconItem.classList.add('icon-item');
+                iconItem.innerHTML = `
+                <div class="icon-image-container">
+                    <canvas width="100" height="100"></canvas>
+                    ${icon.small_svg_url && icon.small_svg_url !== "" ? `<canvas width="50" height="50" class="small-image"></canvas>` : ''}
+                </div>
+                <p class="icon-name">${formatIconName(icon.name)}</p>
+                <div class="details">
+                    <div class="details-subcontainer">
+                    <span class="details-text">Size:</span>
+                    <span class="details-value">${(parseInt(icon.size) / (1024 * 1024)).toFixed(2)} MB</span>
+                    </div>
+                    <div class="details-subcontainer">
+                    <span class="details-text">Date:</span>
+                    <span class="details-value">${new Date(icon.date).toLocaleDateString()}</span>
+                    </div>
+                </div>
+                `;
+
+                const mainCanvas = iconItem.querySelector('canvas');
+                const mainCtx = mainCanvas.getContext('2d');
+                const mainImg = new Image();
+                mainImg.crossOrigin = "Anonymous"; 
+                mainImg.onload = () => {
+                mainCtx.drawImage(mainImg, 0, 0, 100, 100);
+                };
+                mainImg.src = icon.url_icon;
+
+                if (icon.small_svg_url) {
+                const smallCanvas = iconItem.querySelector('.small-image');
+                const smallCtx = smallCanvas.getContext('2d');
+                const smallImg = new Image();
+                smallImg.crossOrigin = "Anonymous";
+                smallImg.onload = () => {
+                    smallCtx.drawImage(smallImg, 0, 0, 50, 50);
+                };
+                smallImg.src = icon.small_svg_url;
+                }
+
+                iconItem.querySelector('.icon-name').addEventListener('click', () => downloadIcon(icon.url_icon, icon.name));
+                iconItem.addEventListener('click', () => showDetails(iconItem));
+                container.appendChild(iconItem);
+            });
+            clearSkeletons();
             }, 500);
         }
 
