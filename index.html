@@ -252,12 +252,20 @@
             display: inline-block;
         }
 
+        .icon-image-container:hover {
+            transform: scale(1.2);
+        }
         .icon-image-container .small-image {
             position: absolute;
             bottom: 5px;
             right: 5px;
             width: 50px;
             height: 50px;
+        }
+        
+        .icon-image-container .small-image:hover {
+            transform: scale(1.2);    
+            transition: transform 0.3s ease; 
         }
     </style>
 </head>
@@ -396,11 +404,19 @@
             sortIcons(sortOption);
         });
 
-        function formatIconCount(count) {
-            if (count >= 1000) {
-                return `${Math.floor(count / 1000)}k`;
+        async function fetchStargazersCount() {
+            try {
+                const response = await fetch(githubApiURL);
+                const data = await response.json();
+                const stargazersCount = data.stargazers_count;
+                document.getElementById('stargazers-count').textContent = '★ ' + formatIconCount(stargazersCount);
+            } catch (error) {
+                console.error('Error fetching stargazers count:', error);
             }
-            return count.toString();
+        }
+
+        function formatIconCount(count) {
+        return count >= 1000 ? `${(count / 1000).toFixed(1)}K` : `${count}`;
         }
 
         function displayIcons(filteredIcons = iconsCache, replaceContent = false) {
