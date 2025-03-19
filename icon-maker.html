@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folder11 Icon Maker</title>
+  <style>
+    :root {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --secondary-text-color: #b3b3b3;
+        --card-bg-color: #1e1e1e;
+        --card-border-color: #333;
+        --hover-color: #555;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 20px;
+        background: var(--bg-color);
+        color: var(--text-color);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .controls {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .control-group {
+        background: var(--card-bg-color);
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid var(--card-border-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .control-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-color);
+        font-weight: bold;
+    }
+
+    input[type="file"], input[type="range"] {
+        padding: 4px;
+        border: 1px solid var(--card-border-color);
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    input[type="color"] {
+      appearance: none;
+      -webkit-appearance: none;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--text-color);
+    outline: 2px solid var(--card-border-color);
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+  }
+
+  #object-color-pickers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Jarak antar elemen */
+  }
+    .button {
+        background: var(--card-bg-color);
+        color: var(--text-color);
+        border: 1px solid var(--card-border-color);
+        border-radius: 6px;
+        padding: 12px 24px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        grid-column: span 3;
+        margin-top: 10px;
+    }
+
+    .button:hover {
+        background-color: var(--hover-color);
+        color: var(--text-color);
+    }
+
+    .preview {
+        background: var(--card-bg-color);
+        border-radius: 8px;
+        padding: 20px;
+        border: 1px solid var(--card-border-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+    }
+
+    #svg-container {
+        position: relative;
+        width: 256px;
+        height: 256px;
+        margin: 0 auto;
+    }
+
+    #custom-svg-container svg {
+        cursor: move;
+        position: absolute;
+        transition: transform 0.1s;
+    }
+
+    .previews-container {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        padding: 15px;
+        background: var(--card-bg-color);
+        border-radius: 8px;
+        justify-content: center;
+    }
+
+    .size-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .size-label {
+        font-size: 0.8em;
+        color: var(--secondary-text-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Effortless Icon Creation with Folder11</h1>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Background Color</label>
+        <input type="color" id="background-color-picker" value="#FCBC19">
+        <label>Gradient Colors</label>
+        <input type="color" id="gradient-color-picker-1" value="#FFE7A2">
+        <input type="color" id="gradient-color-picker-2" value="#FFCB3D">
+
+        <label>Save</label>
+        <button id="save-ico-button" class="button">Save as ICO</button>
+        <button id="save-svg-button" class="button" disabled>Save as SVG</button>
+      </div>
+
+      <div class="control-group">
+        <label>Add Object</label>
+        <input type="file" id="file-input" accept="image/*">
+        <label>Object Size</label>
+        <input type="range" id="size-range" min="10" max="110" value="50">
+        <label>Object Opacity</label>
+        <input type="range" id="opacity-range" min="0" max="1" step="0.1" value="1">
+        <label>Object Style</label>
+        <input type="checkbox" id="drop-shadow-toggle">Drop Shadow</input>
+      </div>
+
+      <div class="control-group">
+        <label>Object Colors</label>
+        <div id="object-color-pickers"></div>
+      </div>
+
+    </div>
+
+    <div class="preview">
+      <div id="svg-container">
+        <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_16_132)" id="base-svg-group">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M104.425 42.3784C100.056 37.0733 93.5437 34 86.6712 34H29C22.3726 34 17 39.3726 17 46V58.1371V68.2V160C17 166.627 22.3726 172 29 172H229C235.627 172 241 166.627 241 160V70.1371C241 63.5097 235.627 58.1371 229 58.1371H117.404L104.425 42.3784Z" fill="#FCBC19"/>
+            <mask id="mask0_16_132" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="17" y="34" width="224" height="138">
+              <path  id="back-svg-group" fill-rule="evenodd" clip-rule="evenodd" d="M104.425 42.3784C100.056 37.0733 93.5437 34 86.6712 34H29C22.3726 34 17 39.3726 17 46V58.1371V68.2V160C17 166.627 22.3726 172 29 172H229C235.627 172 241 166.627 241 160V70.1371C241 63.5097 235.627 58.1371 229 58.1371H117.404L104.425 42.3784Z" fill="url(#paint0_linear_16_132)"/>
+            </mask>
+            <g mask="url(#mask0_16_132)">
+              <g style="mix-blend-mode:multiply" filter="url(#filter0_f_16_132)">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M92.789 74C97.7642 74 102.605 72.3868 106.586 69.4024L116.459 62H229C235.627 62 241 67.3726 241 74V108V160C241 166.627 235.627 172 229 172H29C22.3726 172 17 166.627 17 160L17 108V86C17 79.3726 22.3726 74 29 74H87H92.789Z" fill="black" fill-opacity="0.3"/>
+              </g>
+            </g>
+              <path id="front-svg-group" filter="url(#filter1_ii_16_132)" fill-rule="evenodd" clip-rule="evenodd" d="M92.789 74C97.7642 74 102.605 72.3868 106.586 69.4024L116.459 62H229C235.627 62 241 67.3726 241 74V108V198C241 204.627 235.627 210 229 210H29C22.3726 210 17 204.627 17 198L17 108V86C17 79.3726 22.3726 74 29 74H87H92.789Z" fill="url(#paint1_linear_16_132)"/>
+          <defs>
+            <filter id="filter0_f_16_132" x="-20" y="25" width="298" height="184" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+              <feGaussianBlur stdDeviation="18.5" result="effect1_foregroundBlur_16_132"/>
+            </filter>
+            <filter id="filter1_ii_16_132" x="17" y="62" width="224" height="148" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="4"/>
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"/>
+              <feBlend mode="normal" in2="shape" result="effect1_innerShadow_16_132"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset dy="-4"/>
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0"/>
+              <feBlend mode="soft-light" in2="effect1_innerShadow_16_132" result="effect2_innerShadow_16_132"/>
+            </filter>
+            <linearGradient id="paint0_linear_16_132" x1="17" y1="34" x2="197.768" y2="215.142" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FFE7A2"/>
+              <stop offset="1" stop-color="#FFCB3D"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear_16_132" x1="17" y1="62" x2="241" y2="210" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FFE7A2"/>
+              <stop offset="0.953125" stop-color="#FFCB3D"/>
+            </linearGradient>
+            <clipPath id="clip0_16_132">
+              <rect width="256" height="256" fill="white"/>
+            </clipPath>
+          </defs>
+          <g id="custom-svg-container"></g>
+        </svg>
+      </div>
+      <div class="previews-container" id="size-previews"></div>
+    </div>
+  </div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  let currentFileType = 'svg'; // 'svg' or 'png'
+
+  // Initialize color controls for base SVG
+  const initializeColorControls = () => {
+    document.getElementById('background-color-picker').addEventListener('input', (e) => {
+      document.querySelector('#base-svg-group path:first-child').setAttribute('fill', e.target.value);
+    });
+
+    document.getElementById('gradient-color-picker-1').addEventListener('input', (e) => {
+      document.querySelector('#paint1_linear_16_132 stop:first-child').setAttribute('stop-color', e.target.value);
+    });
+
+    document.getElementById('gradient-color-picker-2').addEventListener('input', (e) => {
+      document.querySelector('#paint1_linear_16_132 stop:last-child').setAttribute('stop-color', e.target.value);
+    });
+  };
+
+  // Function to convert color to hex format
+  const parseColor = (colorValue) => {
+    if (!colorValue || colorValue === 'none' || colorValue.startsWith('url(#')) return null;
+    const ctx = document.createElement('canvas').getContext('2d');
+    ctx.fillStyle = colorValue;
+    return ctx.fillStyle.toLowerCase();
+  };
+
+  // Function to build color map from SVG
+  const buildColorMap = (svgGroup) => {
+    const colorMap = {};
+
+    const traverse = (element) => {
+      const fill = parseColor(element.getAttribute('fill'));
+      if (fill) {
+        colorMap[fill] = colorMap[fill] || [];
+        colorMap[fill].push({ element, attribute: 'fill' });
+      }
+
+      const stroke = parseColor(element.getAttribute('stroke'));
+      if (stroke) {
+        colorMap[stroke] = colorMap[stroke] || [];
+        colorMap[stroke].push({ element, attribute: 'stroke' });
+      }
+
+      Array.from(element.children).forEach(traverse);
+    };
+
+    traverse(svgGroup);
+    return colorMap;
+  };
+
+  // Event handler for uploading SVG
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const colorPickersContainer = document.getElementById('object-color-pickers');
+    const isSVG = file.type === 'image/svg+xml';
+
+    // Reset container
+    const customContainer = document.querySelector('#custom-svg-container');
+    customContainer.innerHTML = '';
+    colorPickersContainer.innerHTML = '';
+
+    // Enable or disable "Save as SVG" button
+    const saveSvgButton = document.getElementById('save-svg-button');
+    saveSvgButton.disabled = !isSVG;
+
+    if (isSVG) {
+      currentFileType = 'svg';
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(event.target.result, 'image/svg+xml');
+        const newSVG = svgDoc.documentElement;
+
+        const wrapperGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        wrapperGroup.classList.add('custom-svg');
+
+        while (newSVG.firstChild) {
+          wrapperGroup.appendChild(newSVG.firstChild);
+        }
+
+        customContainer.appendChild(wrapperGroup);
+
+        const colorMap = buildColorMap(wrapperGroup);
+        Object.keys(colorMap).forEach((color) => {
+          const wrapper = document.createElement('div');
+          wrapper.style.display = 'flex';
+          wrapper.style.alignItems = 'center';
+          wrapper.style.gap = '10px';
+          wrapper.style.marginBottom = '8px';
+
+          const input = document.createElement('input');
+          input.type = 'color';
+          input.value = color;
+          input.dataset.originalColor = color;
+
+          const opacitySlider = document.createElement('input');
+          opacitySlider.type = 'range';
+          opacitySlider.min = '0';
+          opacitySlider.max = '1';
+          opacitySlider.step = '0.1';
+          opacitySlider.value = '1'; // Default opacity
+          opacitySlider.style.width = '100px';
+
+          input.addEventListener('input', (e) => {
+            const newColor = e.target.value;
+            const originalColor = e.target.dataset.originalColor;
+            colorMap[originalColor].forEach(({ element, attribute }) => {
+              element.setAttribute(attribute, newColor);
+            });
+            updateSizePreviews();
+          });
+
+          opacitySlider.addEventListener('input', (e) => {
+            const opacity = e.target.value;
+            const originalColor = input.dataset.originalColor;
+            colorMap[originalColor].forEach(({ element }) => {
+              element.style.opacity = opacity;
+            });
+            updateSizePreviews();
+          });
+
+          wrapper.appendChild(input);
+          wrapper.appendChild(opacitySlider);
+          colorPickersContainer.appendChild(wrapper);
+        });
+
+        // Call handleSizeChange to apply the size and position logic
+        handleSizeChange({ target: document.getElementById('size-range') });
+        updateSizePreviews();
+      };
+      reader.readAsText(file);
+    } else {
+      currentFileType = 'png';
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        img.setAttribute('href', event.target.result);
+        img.setAttribute('width', '100%');
+        img.setAttribute('height', '100%');
+        img.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        img.classList.add('custom-image');
+
+        customContainer.appendChild(img);
+        handleSizeChange({ target: document.getElementById('size-range') });
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Toggle color pickers
+    colorPickersContainer.style.display = isSVG ? 'flex' : 'none';
+  };
+
+  // Event handler for size range input
+  const handleSizeChange = (e) => {
+    const desiredFraction = e.target.value / 100;
+    const frontSVGGroup = document.getElementById('front-svg-group');
+    const frontBBox = frontSVGGroup.getBBox();
+
+    if (currentFileType === 'svg') {
+      const frontCenterX = frontBBox.x + frontBBox.width / 2;
+      const frontCenterY = frontBBox.y + frontBBox.height / 2;
+
+      document.querySelectorAll('.custom-svg').forEach(group => {
+        const bbox = group.getBBox();
+        const scaleX = (frontBBox.width * desiredFraction) / bbox.width;
+        const scaleY = (frontBBox.height * desiredFraction) / bbox.height;
+        const scale = Math.min(scaleX, scaleY);
+        const translateX = frontCenterX - (bbox.width * scale) / 2;
+        const translateY = frontCenterY - (bbox.height * scale) / 2;
+
+        group.setAttribute('transform', `translate(${translateX} ${translateY}) scale(${scale})`);
+      });
+    } else {
+      const images = document.querySelectorAll('.custom-image');
+      images.forEach(img => {
+        const frontCenterX = frontBBox.x + frontBBox.width / 2;
+        const frontCenterY = frontBBox.y + frontBBox.height / 2;
+
+        const scaleX = (frontBBox.width * desiredFraction) / 256;
+        const scaleY = (frontBBox.height * desiredFraction) / 256;
+        const scale = Math.min(scaleX, scaleY);
+
+        const translateX = frontCenterX - (256 * scale) / 2;
+        const translateY = frontCenterY - (256 * scale) / 2;
+
+        img.setAttribute('width', 256 * scale);
+        img.setAttribute('height', 256 * scale);
+        img.setAttribute('x', translateX);
+        img.setAttribute('y', translateY);
+      });
+    }
+  };
+
+  // Event handler for opacity range input
+  const handleOpacityChange = (e) => {
+    const opacity = parseFloat(e.target.value);
+    if (currentFileType === 'svg') {
+      document.querySelectorAll('.custom-svg').forEach(svg => {
+        svg.style.opacity = opacity;
+      });
+    } else {
+      document.querySelectorAll('.custom-image').forEach(img => {
+        img.style.opacity = opacity;
+      });
+    }
+  };
+
+  // Event handler for drop shadow toggle
+  const handleDropShadowToggle = (e) => {
+    const isChecked = e.target.checked;
+    if (currentFileType === 'svg') {
+      document.querySelectorAll('.custom-svg').forEach(svg => {
+        svg.style.filter = isChecked ? 'drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5))' : 'none';
+      });
+    } else {
+      document.querySelectorAll('.custom-image').forEach(img => {
+        img.style.filter = isChecked ? 'drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5))' : 'none';
+      });
+    }
+  };
+
+  // Function to update size previews
+  const updateSizePreviews = () => {
+    const sizes = [64, 48, 40, 32, 24, 20, 16];
+    const container = document.getElementById('size-previews');
+    const mainSVG = document.querySelector('svg');
+    const clonedSVG = mainSVG.cloneNode(true);
+
+    container.innerHTML = '';
+
+    sizes.forEach(size => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'size-preview';
+
+      const svgClone = clonedSVG.cloneNode(true);
+      svgClone.setAttribute('width', size);
+      svgClone.setAttribute('height', size);
+
+      const label = document.createElement('div');
+      label.className = 'size-label';
+      label.textContent = `${size}x${size}`;
+
+      wrapper.appendChild(svgClone);
+      wrapper.appendChild(label);
+      container.appendChild(wrapper);
+    });
+  };
+
+  // Initialize event listeners
+  const initializeEventListeners = () => {
+    initializeColorControls();
+    document.getElementById('file-input').addEventListener('change', handleFileUpload);
+    document.getElementById('size-range').addEventListener('input', handleSizeChange);
+    document.getElementById('opacity-range').addEventListener('input', handleOpacityChange);
+    document.getElementById('drop-shadow-toggle').addEventListener('change', handleDropShadowToggle);
+
+    const observers = [
+      'background-color-picker',
+      'gradient-color-picker-1',
+      'gradient-color-picker-2',
+      'size-range',
+      'opacity-range',
+      'drop-shadow-toggle'
+    ];
+
+    observers.forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        setTimeout(updateSizePreviews, 100);
+      });
+    });
+
+    updateSizePreviews();
+  };
+
+  // Event handler for saving as ICO
+  const saveAsICO = async () => {
+    const svgElement = document.querySelector('svg');
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svgElement);
+    const sizes = [256, 64, 48, 40, 32, 24, 20, 16];
+
+    const svgToPng = async (svg, size) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, size, size);
+          resolve(canvas.toDataURL('image/png'));
+        };
+      });
+    };
+
+    const pngBuffers = await Promise.all(sizes.map(async (size) => {
+      const pngData = await svgToPng(svgString, size);
+      const byteString = atob(pngData.split(',')[1]);
+      const buffer = new Uint8Array(byteString.length);
+      for (let i = 0; i < byteString.length; i++) {
+        buffer[i] = byteString.charCodeAt(i);
+      }
+      return buffer;
+    }));
+
+    const icoHeader = new Uint8Array([
+      0x00, 0x00, 0x01, 0x00, sizes.length & 0xff, 0x00
+    ]);
+
+    let offset = icoHeader.byteLength + (sizes.length * 16);
+    const entries = [];
+    const images = [];
+
+    for (let i = 0; i < sizes.length; i++) {
+      const size = sizes[i];
+      const buffer = pngBuffers[i];
+      entries.push(new Uint8Array([
+        size === 256 ? 0 : size, size === 256 ? 0 : size,
+        0, 0, 1, 0, 32, 0,
+        buffer.length & 0xff, (buffer.length >> 8) & 0xff, (buffer.length >> 16) & 0xff, (buffer.length >> 24) & 0xff,
+        offset & 0xff, (offset >> 8) & 0xff, (offset >> 16) & 0xff, (offset >> 24) & 0xff
+      ]));
+      images.push(buffer);
+      offset += buffer.length;
+    }
+
+    const icoData = new Uint8Array(
+      icoHeader.byteLength +
+      entries.reduce((a, b) => a + b.byteLength, 0) +
+      images.reduce((a, b) => a + b.byteLength, 0)
+    );
+
+    icoData.set(icoHeader, 0);
+    let pos = icoHeader.byteLength;
+    entries.forEach(entry => {
+      icoData.set(entry, pos);
+      pos += entry.byteLength;
+    });
+    images.forEach(image => {
+      icoData.set(image, pos);
+      pos += image.byteLength;
+    });
+
+    const blob = new Blob([icoData], { type: 'image/x-icon' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'icon.ico';
+    link.click();
+  };
+
+  // Event handler for saving as SVG
+  const saveAsSVG = () => {
+    const svgElement = document.querySelector('svg');
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svgElement);
+    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'icon.svg';
+    link.click();
+  };
+
+  // Initialize the application
+  initializeEventListeners();
+  document.getElementById('save-ico-button').addEventListener('click', saveAsICO);
+  document.getElementById('save-svg-button').addEventListener('click', saveAsSVG);
+});
+
+  </script>
+</body>
+</html>
