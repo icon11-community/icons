@@ -267,6 +267,27 @@
             transform: scale(1.2);    
             transition: transform 0.3s ease; 
         }
+        .icon-maker-button {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--card-border-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            padding: 5px 10px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            position: absolute;
+            top: 15px;
+            right: 70px;
+        }
+
+        .icon-maker-button:hover {
+            background-color: var(--hover-color);
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -277,24 +298,24 @@
             </svg>
         </a>
         <h1>Folder11 Community</h1>
-    <div id="search-container">
-        <input type="text" id="search-bar" placeholder="Search icons...">
-        <select id="sort-select">
-            <option value="sort">Sort</option>
-            <option value="a-z">A-Z</option>
-            <option value="z-a">Z-A</option>
-            <option value="date-newest">Newest</option>
-            <option value="date-oldest">Oldest</option>
-        </select>
-    </div>
-
-    <button id="scroll-to-top-btn" title="Scroll to Top">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 19V5M5 12l7-7 7 7"/>
-        </svg>
-    </button>
-
+        <div id="search-container">
+            <input type="text" id="search-bar" placeholder="Search icons...">
+            <select id="sort-select">
+                <option value="sort">Sort</option>
+                <option value="a-z">A-Z</option>
+                <option value="z-a">Z-A</option>
+                <option value="date-newest">Newest</option>
+                <option value="date-oldest">Oldest</option>
+            </select>
+        </div>
+        <a href="icon-maker.html" id="icon-maker-link" class="icon-maker-button">Icon Maker</a>
+        <button id="scroll-to-top-btn" title="Scroll to Top">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7"/>
+            </svg>
+        </button>
     </header>
+
     <main>
         <div id="icons-container" class="icon-list"></div>
     </main>
