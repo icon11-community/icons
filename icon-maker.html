@@ -10,14 +10,14 @@
 
   <style>
     :root {
-        --bg-color: #121212;
-        --text-color: #e0e0e0;
-        --secondary-text-color: #b3b3b3;
-        --card-bg-color: #1e1e1e;
-        --card-border-color: #333;
-        --hover-color: #555;
-        --PrimaryColor: #0078D7;
-        --PrimaryColorLight: #60CDFF;
+      --bg-color: #121212;
+      --text-color: #e0e0e0;
+      --secondary-text-color: #b3b3b3;
+      --card-bg-color: #1e1e1e;
+      --card-border-color: #333;
+      --hover-color: #555;
+      --PrimaryColor: #0078D7;
+      --PrimaryColorLight: #60CDFF;
     }
 
     [data-theme="dark"] ::selection {
@@ -26,117 +26,118 @@
     }
 
     body {
-        font-family: 'Segoe UI';
-        margin: 15px;
-        background: var(--bg-color);
-        color: var(--text-color);
+      font-family: 'Segoe UI';
+      margin: 15px;
+      background: var(--bg-color);
+      color: var(--text-color);
     }
 
     .container {
-        max-width: 1200px;
-        margin: 0 auto;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .controls {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
     }
 
     .control-group {
-        background: var(--card-bg-color);
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid var(--card-border-color);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      background: var(--card-bg-color);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border-color);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     .control-group label {
-        display: block;
-        margin-bottom: 10px;
-        color: var(--text-color);
-        font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text-color);
+      font-weight: bold;
     }
 
     input[type="color"] {
       appearance: none;
       -webkit-appearance: none;
-    width: 30px;
-    height: 30px;
-    border: 2px solid var(--text-color);
-    outline: 2px solid var(--card-border-color);
-    border-radius: 9%;
-    overflow: hidden;
-    cursor: pointer;
-    padding: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--text-color);
+      outline: 2px solid var(--card-border-color);
+      border-radius: 9%;
+      overflow: hidden;
+      cursor: pointer;
+      padding: 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
 
-  input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 0;
-    border-radius: 9%;
-  }
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+      border-radius: 9%;
+    }
 
-  input[type="color"]::-webkit-color-swatch {
-    border: none;
-    border-radius: 9%;
-  }
+    input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 9%;
+    }
 
-  #object-color-pickers {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Jarak antar elemen */
-  }
+    #object-color-pickers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
     .preview {
-        background: var(--card-bg-color);
-        border-radius: 8px;
-        padding: 20px;
-        border: 1px solid var(--card-border-color);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        margin-bottom: 30px;
+      background: var(--card-bg-color);
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid var(--card-border-color);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      margin-bottom: 30px;
     }
 
     #svg-container {
-        position: relative;
-        width: 256px;
-        height: 256px;
-        margin: 0 auto;
+      position: relative;
+      width: 256px;
+      height: 256px;
+      margin: 0 auto;
     }
 
     #custom-svg-container svg {
-        cursor: move;
-        position: absolute;
-        transition: transform 0.1s;
+      cursor: move;
+      position: absolute;
+      transition: transform 0.1s;
     }
 
     .previews-container {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-top: 20px;
-        padding: 15px;
-        background: var(--card-bg-color);
-        border-radius: 8px;
-        justify-content: center;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--card-bg-color);
+      border-radius: 8px;
+      justify-content: center;
     }
 
     .size-preview {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 10px;
-        border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 4px;
     }
 
     .size-label {
-        font-size: 0.8em;
-        color: var(--secondary-text-color);
+      font-size: 0.8em;
+      color: var(--secondary-text-color);
     }
+
     .app-range-slider {
-        margin-bottom: 10px; 
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -145,20 +146,19 @@
     <h1>Effortless Icon Creation with Folder11</h1>
 
     <div class="controls">
-
       <div class="control-group">
         <label>Folder Style</label>
-        
         <div class="app-select-menu" id="folder-style-select" placeholder="Folder Style">
           <select name="Some Name">
             <option value="folder11">Win 11</option>
             <option value="folder10">Win 10 (11 Style)</option>
+            <option value="folderMacOs">Mac OS</option>
           </select>
         </div>
 
-
         <label>Background Color</label>
         <input type="color" id="background-color-picker" value="#FCBC19">
+
         <label>Gradient Colors</label>
         <input type="color" id="gradient-color-picker-1" value="#FFE7A2">
         <input type="color" id="gradient-color-picker-2" value="#FFCB3D">
@@ -167,15 +167,12 @@
         <button class="app-btn app-btn-primary" id="save-ico-button">
           <span>Save as ICO</span>
         </button>
-
-        <button class="app-btn" id="save-svg-button" >
+        <button class="app-btn" id="save-svg-button">
           <span>Save as SVG</span>
         </button>
-
       </div>
 
       <div class="control-group">
-        
         <label>Add Object</label>
         <input type="file" id="file-input" accept="image/*">
 
@@ -183,10 +180,8 @@
         <div class="app-range-slider">
           <input type="range" id="size-range" min="10" max="300" step="1" value="150">
         </div>
-        
 
         <label>Opacity</label>
-        
         <div class="app-range-slider">
           <input type="range" id="opacity-range" min="0" max="1" step="0.1" value="1">
         </div>
@@ -201,25 +196,21 @@
             <label>Offset</label>
             <div class="app-range-slider">
               <input type="range" id="offset-x" min="-350" max="350" step="1" value="0">
-    
               <input type="range" id="offset-y" min="-350" max="350" step="1" value="0">
             </div>
-    
+
             <label>Skew</label>
-    
             <div class="app-range-slider">
               <input type="range" id="skew-x" min="-150" max="150" step="1" value="0.1">
-    
               <input type="range" id="skew-y" min="-150" max="150" step="1" value="0.1">
             </div>
-            
+
             <label class="app-switch">
-            <label>Drop Shadow</label>
+              <label>Drop Shadow</label>
               <input type="checkbox" id="drop-shadow-toggle" />
               <div class="app-switch-view"></div>
               <span class="app-switch-label" style="width: 28px;"></span>
             </label>
-            <br/>
           </div>
         </div>
       </div>
@@ -246,14 +237,13 @@
 
   <script src="https://cdn.jsdelivr.net/npm/windows-ui-fabric@4.0.1/dist/windows-ui.min.js" crossorigin="anonymous"></script>
   <script type="module">
-    
     document.addEventListener('DOMContentLoaded', () => {
       let currentFileType = 'svg';
       let offsetX = 0;
       let offsetY = 0;
       let skewX = 0;
       let skewY = 0;
-
+  
       const folder11SVG = `
         <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clip-path="url(#clip0_16_132)" id="base-svg-group">
@@ -267,6 +257,7 @@
               </g>
             </g>
             <path id="front-svg-group" filter="url(#filter1_ii_16_132)" fill-rule="evenodd" clip-rule="evenodd" d="M92.789 74C97.7642 74 102.605 72.3868 106.586 69.4024L116.459 62H229C235.627 62 241 67.3726 241 74V108V198C241 204.627 235.627 210 229 210H29C22.3726 210 17 204.627 17 198L17 108V86C17 79.3726 22.3726 74 29 74H87H92.789Z" fill="url(#paint1_linear_16_132)"/>
+          </g>
           <defs>
             <filter id="filter0_f_16_132" x="-20" y="25" width="298" height="184" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
               <feFlood flood-opacity="0" result="BackgroundImageFix"/>
@@ -295,14 +286,115 @@
               <stop stop-color="#FFE7A2"/>
               <stop offset="0.953125" stop-color="#FFCB3D"/>
             </linearGradient>
-            <clipPath id="clip0_16_132">
-              <rect width="256" height="256" fill="white"/>
-            </clipPath>
           </defs>
-          <g id="custom-svg-container"></g>
         </svg>
       `;
-
+      const folderMacOs = `
+      <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_dddd_1_2)">
+          <mask id="mask0_1_2" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="10" y="31" width="236" height="210">
+            <path d="M39.3 228.5H216.7C226.781 228.5 231.821 228.5 235.672 226.538C239.059 224.812 241.812 222.059 243.538 218.672C245.5 214.821 245.5 209.781 245.5 199.7V78.3C245.5 68.2191 245.5 63.1786 243.538 59.3282C241.812 55.9413 239.059 53.1876 235.672 51.4619C231.821 49.5 226.781 49.5 216.7 49.5H119.375C114 49.5 107.125 49 100.375 43.875C93.625 38.75 99.375 43.125 92.25 37.625C85.125 32.125 81.4915 31 75.25 31H39.3C29.2191 31 24.1786 31 20.3282 32.9619C16.9413 34.6876 14.1876 37.4413 12.4619 40.8282C10.5 44.6786 10.5 49.7191 10.5 59.8V199.7C10.5 209.781 10.5 214.821 12.4619 218.672C14.1876 222.059 16.9413 224.812 20.3282 226.538C24.1786 228.5 29.2191 228.5 39.3 228.5Z" fill="url(#paint0_linear_1_2)"/>
+          </mask>
+          <g mask="url(#mask0_1_2)">
+            <path id="back-svg-group" d="M39.3 228.5H216.7C226.781 228.5 231.821 228.5 235.672 226.538C239.059 224.812 241.812 222.059 243.538 218.672C245.5 214.821 245.5 209.781 245.5 199.7V78.3C245.5 68.2191 245.5 63.1786 243.538 59.3282C241.812 55.9413 239.059 53.1876 235.672 51.4619C231.821 49.5 226.781 49.5 216.7 49.5H119.375C114 49.5 107.125 49 100.375 43.875C93.625 38.75 99.375 43.125 92.25 37.625C85.125 32.125 81.4915 31 75.25 31H39.3C29.2191 31 24.1786 31 20.3282 32.9619C16.9413 34.6876 14.1876 37.4413 12.4619 40.8282C10.5 44.6786 10.5 49.7191 10.5 59.8V199.7C10.5 209.781 10.5 214.821 12.4619 218.672C14.1876 222.059 16.9413 224.812 20.3282 226.538C24.1786 228.5 29.2191 228.5 39.3 228.5Z" fill="#FCBC19"/>
+            <g filter="url(#filter1_dii_1_2)">
+              <rect id="front-svg-group" x="10.5" y="64.5" width="235" height="164" rx="18" fill="url(#paint1_linear_16_132)"/>
+            </g>
+            <g filter="url(#filter2_di_1_2)">
+              <rect x="10.5" y="204" width="235" height="4.5" fill="white" fill-opacity="0.1" shape-rendering="crispEdges"/>
+            </g>
+            <g filter="url(#filter3_di_1_2)">
+              <rect x="10.5" y="213.25" width="235" height="4.5" fill="white" fill-opacity="0.1" shape-rendering="crispEdges"/>
+            </g>
+          </g>
+        </g>
+        <g id="custom-svg-container"></g>
+        <defs>
+          <filter id="filter0_dddd_1_2" x="2.5" y="27" width="251" height="225.5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="4"/>
+            <feGaussianBlur stdDeviation="4"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_2"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="3"/>
+            <feGaussianBlur stdDeviation="3"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.21 0"/>
+            <feBlend mode="normal" in2="effect1_dropShadow_1_2" result="effect2_dropShadow_1_2"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="2"/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
+            <feBlend mode="normal" in2="effect2_dropShadow_1_2" result="effect3_dropShadow_1_2"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="0.5"/>
+            <feGaussianBlur stdDeviation="0.5"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+            <feBlend mode="normal" in2="effect3_dropShadow_1_2" result="effect4_dropShadow_1_2"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect4_dropShadow_1_2" result="shape"/>
+          </filter>
+          <filter id="filter1_dii_1_2" x="-5.5" y="44.5" width="267" height="196" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="-4"/>
+            <feGaussianBlur stdDeviation="8"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.317647 0 0 0 0 0.317647 0 0 0 0 0.317647 0 0 0 0.5 0"/>
+            <feBlend mode="multiply" in2="BackgroundImageFix" result="effect1_dropShadow_1_2"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_2" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="-8"/>
+            <feGaussianBlur stdDeviation="16"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.317647 0 0 0 0 0.317647 0 0 0 0 0.317647 0 0 0 0.2 0"/>
+            <feBlend mode="multiply" in2="shape" result="effect2_innerShadow_1_2"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="1.5"/>
+            <feGaussianBlur stdDeviation="0.75"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.15 0"/>
+            <feBlend mode="normal" in2="effect2_innerShadow_1_2" result="effect3_innerShadow_1_2"/>
+          </filter>
+          <filter id="filter2_di_1_2" x="9" y="202.5" width="238" height="9" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="1.5"/>
+            <feGaussianBlur stdDeviation="0.75"/>
+            <feComposite in2="hardAlpha" operator="out"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.317647 0 0 0 0 0.317647 0 0 0 0 0.317647 0 0 0 0.1 0"/>
+            <feBlend mode="multiply" in2="BackgroundImageFix" result="effect1_dropShadow_1_2"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_2" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="-1.5"/>
+            <feGaussianBlur stdDeviation="0.75"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.318802 0 0 0 0 0.318802 0 0 0 0 0.318802 0 0 0 0.1 0"/>
+            <feBlend mode="multiply" in2="shape" result="effect2_innerShadow_1_2"/>
+          </filter>
+          <filter id="filter3_di_1_2" x="9" y="211.75" width="238" height="9" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dy="1.5"/>
+            <feGaussianBlur stdDeviation="0.75"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0.317647 0 0 0 0 0.317647 0 0 0 0 0.317647 0 0 0 0.1 0"/>
+            <feBlend mode="multiply" in2="shape" result="effect2_innerShadow_1_2"/>
+          </filter>
+          <linearGradient id="paint0_linear_1_2" x1="128" y1="43" x2="128" y2="240.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#E4E4E4"/>
+            <stop offset="0.229272" stop-color="#D8D8D8"/>
+          </linearGradient>
+          <linearGradient id="paint1_linear_16_132" x1="128" y1="64.5" x2="128" y2="228.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFE7A2"/>
+            <stop offset="1" stop-color="#FFCB3D"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      `;
       const folder10SVG = `
         <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path id="back-svg-group" fill-rule="evenodd" clip-rule="evenodd" d="M182.151 138.967C186.488 142.517 189 147.808 189 153.392V200.25C189 205.635 184.608 210 179.19 210H169.269H161.043L54.8095 210C49.3922 210 44.9999 205.635 44.9999 200.25L44.9999 37.75C44.9999 32.3656 49.3922 28 54.8095 28L159.459 28C164.877 28 169.269 32.3656 169.269 37.75L169.269 128.422L182.151 138.967Z" fill="#FCBC19"/>
@@ -772,14 +864,19 @@
 
         // Reset custom SVG container
         const customContainer = document.querySelector('#custom-svg-container');
-        customContainer.innerHTML = '';
 
         // Reset color pickers container
         const colorPickersContainer = document.getElementById('object-color-pickers');
         colorPickersContainer.innerHTML = '';
         colorPickersContainer.style.display = 'none';
   
-        svgContainer.innerHTML = selectedStyle === 'folder11' ? folder11SVG : folder10SVG;
+        if (selectedStyle === 'folder11') {
+            svgContainer.innerHTML = folder11SVG;
+          } else if (selectedStyle === 'folder10') {
+            svgContainer.innerHTML = folder10SVG;
+          } else if (selectedStyle === 'folderMacOs') {
+            svgContainer.innerHTML = folderMacOs;
+          }
         initializeEventListeners();
         updateSizePreviews();
       };
