@@ -89,7 +89,7 @@
             padding: 20px;
         }
         .icon-name {
-            cursor: pointer;
+            cursor: default;
         }
         .icon-list {
             display: grid;
@@ -100,7 +100,7 @@
         }
         .icon-item {
             background-color: var(--card-bg-color);
-            padding: 15px;
+            padding: 25px 15px 15px 15px;
             border: 1px solid var(--card-border-color);
             border-radius: 12px;
             text-align: center;
@@ -108,6 +108,69 @@
             position: relative;
             opacity: 0;
             animation: fadeIn 0.5s forwards ease;
+        }
+        
+        .download-btn,
+        .open-btn {
+            position: absolute;
+            top: 8px;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--card-border-color);
+            border-radius: 6px;
+            color: var(--text-color);
+            cursor: pointer;
+            z-index: 20;
+            transition: background-color 0.18s ease, transform 0.12s ease, opacity 0.12s ease;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-4px) scale(0.98);
+        }
+
+        .download-btn svg,
+        .open-btn svg {
+            width: 16px;
+            height: 16px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        .download-btn { right: 8px; }
+        .open-btn { right: 44px; }
+
+        .icon-item:hover .download-btn,
+        .icon-item:hover .open-btn {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .icon-item.selected .download-btn,
+        .icon-item.selected .open-btn {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .download-btn:hover,
+        .open-btn:hover {
+            background-color: var(--hover-color);
+            transform: scale(1.06);
+        }
+
+        .download-btn.downloaded {
+            background-color: #2e8b57;
+            border-color: rgba(46,139,87,0.6);
+            color: #ffffff;
+        }
+        .download-btn.disabled {
+            opacity: 0.6;
+            pointer-events: none;
+            transform: translateY(0) scale(0.98);
         }
         @keyframes fadeIn {
             from {
@@ -250,22 +313,47 @@
         .icon-image-container {
             position: relative;
             display: inline-block;
+            transform-origin: center;
+            transition: transform 200ms cubic-bezier(.2,.9,.2,1);
         }
 
-        .icon-image-container:hover {
+        .icon-item:hover .icon-image-container,
+        .icon-item.selected .icon-image-container {
             transform: scale(1.2);
         }
+
+        .icon-item.selected {
+            border-color: rgba(46,139,87,0.45);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.45), 0 0 0 4px rgba(46,139,87,0.04);
+        }
+
+        .icon-item.selected .icon-image-container {
+            animation: selectPop 260ms cubic-bezier(.2,.9,.2,1);
+            transform: scale(1.2);
+        }
+
+        @keyframes selectPop {
+            0% { transform: scale(1.05); }
+            50% { transform: scale(1.28); }
+            100% { transform: scale(1.2); }
+        }
+
+        .icon-item:hover .icon-image-container .small-image:not(:hover),
+        .icon-item.selected .icon-image-container .small-image:not(:hover) {
+            transform: none !important;
+        }
+
         .icon-image-container .small-image {
             position: absolute;
             bottom: 5px;
             right: 5px;
             width: 50px;
             height: 50px;
+            transition: transform 0.24s ease;
         }
         
         .icon-image-container .small-image:hover {
-            transform: scale(1.2);    
-            transition: transform 0.3s ease; 
+            transform: scale(1.2); 
         }
         .icon-maker-button {
             background-color: var(--card-bg-color);
@@ -454,6 +542,12 @@
                 const iconItem = document.createElement('div');
                 iconItem.classList.add('icon-item');
                 iconItem.innerHTML = `
+                <button class="open-btn" title="Open icon in new tab" aria-label="Open icon in new tab">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M10.0002 5H8.2002C7.08009 5 6.51962 5 6.0918 5.21799C5.71547 5.40973 5.40973 5.71547 5.21799 6.0918C5 6.51962 5 7.08009 5 8.2002V15.8002C5 16.9203 5 17.4801 5.21799 17.9079C5.40973 18.2842 5.71547 18.5905 6.0918 18.7822C6.5192 19 7.07899 19 8.19691 19H15.8031C16.921 19 17.48 19 17.9074 18.7822C18.2837 18.5905 18.5905 18.2839 18.7822 17.9076C19 17.4802 19 16.921 19 15.8031V14M20 9V4M20 4H15M20 4L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <button class="download-btn" title="Download icon" aria-label="Download icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
                 <div class="icon-image-container">
                     <canvas width="100" height="100"></canvas>
                     ${icon.small_svg_url && icon.small_svg_url !== "" ? `<canvas width="50" height="50" class="small-image"></canvas>` : ''}
@@ -491,7 +585,41 @@
                 smallImg.src = icon.small_svg_url;
                 }
 
-                iconItem.querySelector('.icon-name').addEventListener('click', () => downloadIcon(icon.url_icon, icon.name));
+                const dlBtn = iconItem.querySelector('.download-btn');
+                if (dlBtn) {
+                    dlBtn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        if (dlBtn.disabled) return;
+                        dlBtn.disabled = true;
+                        dlBtn.classList.add('disabled');
+                        const originalHTML = dlBtn.innerHTML;
+                        const success = await downloadIcon(icon.url_icon, icon.name);
+                        if (success) {
+                            dlBtn.classList.add('downloaded');
+                            dlBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                            setTimeout(() => {
+                                dlBtn.classList.remove('downloaded');
+                                dlBtn.innerHTML = originalHTML;
+                                dlBtn.disabled = false;
+                                dlBtn.classList.remove('disabled');
+                            }, 2000);
+                        } else {
+                            setTimeout(() => {
+                                dlBtn.disabled = false;
+                                dlBtn.classList.remove('disabled');
+                            }, 1200);
+                        }
+                    });
+                }
+
+                const openBtn = iconItem.querySelector('.open-btn');
+                if (openBtn) {
+                    openBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openIcon(icon.url_icon);
+                    });
+                }
+
                 iconItem.addEventListener('click', () => showDetails(iconItem));
                 container.appendChild(iconItem);
             });
@@ -500,11 +628,23 @@
         }
 
         function showDetails(iconItem) {
+            const detailsElement = iconItem.querySelector('.details');
+
+            if (currentDetailsElement === detailsElement) {
+                detailsElement.style.display = 'none';
+                iconItem.classList.remove('selected');
+                currentDetailsElement = null;
+                return;
+            }
+
             if (currentDetailsElement) {
+                const prevItem = currentDetailsElement.closest('.icon-item');
+                if (prevItem) prevItem.classList.remove('selected');
                 currentDetailsElement.style.display = 'none';
             }
-            const detailsElement = iconItem.querySelector('.details');
+
             detailsElement.style.display = 'block';
+            iconItem.classList.add('selected');
             currentDetailsElement = detailsElement;
         }
 
@@ -531,11 +671,45 @@
             return name.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
         }
 
-        function downloadIcon(url, name) {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = name;
+        function openIcon(url) {
             window.open(url, '_blank');
+        }
+
+        function getExtensionFromUrl(url) {
+            try {
+                const pathname = new URL(url).pathname;
+                const match = pathname.match(/\.[a-zA-Z0-9]+$/);
+                return match ? match[0] : '';
+            } catch (e) {
+                return '';
+            }
+        }
+
+        async function downloadIcon(url, name) {
+            try {
+                const response = await fetch(url, { mode: 'cors' });
+                if (!response.ok) throw new Error('Network response was not ok');
+                const blob = await response.blob();
+                const ext = getExtensionFromUrl(url) || '';
+                const filename = `${name}${ext}`;
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(blobUrl);
+                return true;
+            } catch (error) {
+                console.error('Download failed, opening in new tab instead:', error);
+                try {
+                    window.open(url, '_blank');
+                } catch (e) {
+                    console.error('Fallback open failed', e);
+                }
+                return false;
+            }
         }
 
         window.addEventListener('scroll', () => {
