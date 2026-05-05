@@ -232,22 +232,6 @@
             margin-right: 3px;
             flex-shrink: 1;
         }
-
-        /* --- CSS Baru untuk Tautan Author --- */
-        .author-link {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease, text-decoration 0.2s ease;
-            cursor: pointer;
-        }
-
-        .author-link:hover {
-            color: #58a6ff;
-            text-decoration: underline;
-        }
-        /* ------------------------------------ */
-
         .skeleton-item {
             background-color: var(--card-bg-color);
             padding: 15px;
@@ -313,7 +297,7 @@
             cursor: pointer;
             opacity: 0;
             transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-            z-index: 1000;
+            z-index: 1000; /* Ensure the button is always in front */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
@@ -408,8 +392,7 @@
                 <option value="sort">Sort</option>
                 <option value="a-z">A-Z</option>
                 <option value="z-a">Z-A</option>
-                <!-- Menjadikan Newest sebagai default bawaan UI -->
-                <option value="date-newest" selected>Newest</option>
+                <option value="date-newest">Newest</option>
                 <option value="date-oldest">Oldest</option>
             </select>
         </div>
@@ -430,13 +413,8 @@
         let currentPage = 0;
         const iconsPerPage = 48;
         let currentDetailsElement = null;
-        
-        // Memastikan algoritma internal JS langsung urut berdasarkan Newest
-        let currentSortOption = 'date-newest';
+        let currentSortOption = 'sort';
         let currentSearchTerm = '';
-        
-        // Counter untuk perbaikan bug double pencarian (race condition)
-        let renderIdCounter = 0;
 
         window.addEventListener('scroll', () => {
             const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
@@ -461,46 +439,10 @@
                 const data = await response.json();
                 iconsCache = data.icons;
                 updatePageTitleAndMeta(iconsCache.length);
-                
-                // Sorting cache saat pertama kali di-load
-                iconsCache = sortIconsInternal(iconsCache, currentSortOption);
-                
                 displayIcons();
             } catch (error) {
                 console.error('Error fetching icons:', error);
                 clearSkeletons();
-            }
-        }
-
-        // --- Fungsi Helper untuk Tanggal Super Aman ---
-        function getSafeTime(dateStr) {
-            if (!dateStr) return 0;
-            
-            let time = new Date(dateStr).getTime();
-            if (!isNaN(time)) return time;
-
-            // Fallback untuk tanggal non-standar (jika sewaktu-waktu ada typo penulisan JSON)
-            const parts = dateStr.split(/[\/\-]/);
-            if (parts.length === 3) {
-                time = new Date(`${parts[2]}/${parts[1]}/${parts[0]}`).getTime();
-                if (!isNaN(time)) return time;
-            }
-            
-            return 0;
-        }
-
-        function sortIconsInternal(icons, sortOption) {
-            switch (sortOption) {
-                case 'a-z':
-                    return icons.sort((a, b) => formatIconName(a.name).localeCompare(formatIconName(b.name)));
-                case 'z-a':
-                    return icons.sort((a, b) => formatIconName(b.name).localeCompare(formatIconName(a.name)));
-                case 'date-newest':
-                    return icons.sort((a, b) => getSafeTime(b.date) - getSafeTime(a.date));
-                case 'date-oldest':
-                    return icons.sort((a, b) => getSafeTime(a.date) - getSafeTime(b.date));
-                default:
-                    return icons;
             }
         }
 
@@ -525,6 +467,21 @@
             displayIcons(filteredIcons, true);
         }
 
+        function sortIconsInternal(icons, sortOption) {
+            switch (sortOption) {
+                case 'a-z':
+                    return icons.sort((a, b) => formatIconName(a.name).localeCompare(formatIconName(b.name)));
+                case 'z-a':
+                    return icons.sort((a, b) => formatIconName(b.name).localeCompare(formatIconName(a.name)));
+                case 'date-newest':
+                    return icons.sort((a, b) => new Date(b.date) - new Date(a.date));
+                case 'date-oldest':
+                    return icons.sort((a, b) => new Date(a.date) - new Date(b.date));
+                default:
+                    return icons;
+            }
+        }
+
         function debounce(func, delay) {
             let timeout;
             return function (...args) {
@@ -532,7 +489,6 @@
                 timeout = setTimeout(() => func.apply(this, args), delay);
             };
         }
-        
         document.addEventListener('DOMContentLoaded', () => {
             const sortSelect = document.getElementById('sort-select');
             sortSelect.addEventListener('click', () => {
@@ -544,7 +500,6 @@
                 });
             });
         });
-        
         document.getElementById('search-bar').addEventListener(
             'input',
             debounce((e) => {
@@ -570,133 +525,105 @@
         }
 
         function formatIconCount(count) {
-            return count >= 1000 ? `${(count / 1000).toFixed(1)}K` : `${count}`;
+        return count >= 1000 ? `${(count / 1000).toFixed(1)}K` : `${count}`;
         }
 
         function displayIcons(filteredIcons = iconsCache, replaceContent = false) {
             const container = document.getElementById('icons-container');
-            const currentRenderId = ++renderIdCounter;
-
             if (replaceContent) {
-                container.innerHTML = '';
+            container.innerHTML = '';
             }
             displaySkeletons(6);
             const start = currentPage * iconsPerPage;
             const end = start + iconsPerPage;
             const iconsToShow = filteredIcons.slice(start, end);
-            
             setTimeout(() => {
-                // Membatalkan eksekusi jika ada pengetikan baru sebelum setTimeout selesai
-                if (currentRenderId !== renderIdCounter) return;
+            iconsToShow.forEach(icon => {
+                const iconItem = document.createElement('div');
+                iconItem.classList.add('icon-item');
+                iconItem.innerHTML = `
+                <button class="open-btn" title="Open icon in new tab" aria-label="Open icon in new tab">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M10.0002 5H8.2002C7.08009 5 6.51962 5 6.0918 5.21799C5.71547 5.40973 5.40973 5.71547 5.21799 6.0918C5 6.51962 5 7.08009 5 8.2002V15.8002C5 16.9203 5 17.4801 5.21799 17.9079C5.40973 18.2842 5.71547 18.5905 6.0918 18.7822C6.5192 19 7.07899 19 8.19691 19H15.8031C16.921 19 17.48 19 17.9074 18.7822C18.2837 18.5905 18.5905 18.2839 18.7822 17.9076C19 17.4802 19 16.921 19 15.8031V14M20 9V4M20 4H15M20 4L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <button class="download-btn" title="Download icon" aria-label="Download icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <div class="icon-image-container">
+                    <canvas width="100" height="100"></canvas>
+                    ${icon.small_svg_url && icon.small_svg_url !== "" ? `<canvas width="50" height="50" class="small-image"></canvas>` : ''}
+                </div>
+                <p class="icon-name">${formatIconName(icon.name)}</p>
+                <div class="details">
+                    <div class="details-subcontainer">
+                    <span class="details-text">Size:</span>
+                    <span class="details-value">${(parseInt(icon.size) / (1024 * 1024)).toFixed(2)} MB</span>
+                    </div>
+                    <div class="details-subcontainer">
+                    <span class="details-text">Date:</span>
+                    <span class="details-value">${new Date(icon.date).toLocaleDateString()}</span>
+                    </div>
+                </div>
+                `;
 
-                iconsToShow.forEach(icon => {
-                    const iconItem = document.createElement('div');
-                    iconItem.classList.add('icon-item');
-                    
-                    // Formatting ISO date untuk tampilan
-                    let displayDate = 'Unknown';
-                    if (icon.date) {
-                        const parsedDate = new Date(icon.date);
-                        if (!isNaN(parsedDate.getTime())) {
-                            displayDate = parsedDate.toLocaleDateString();
+                const mainCanvas = iconItem.querySelector('canvas');
+                const mainCtx = mainCanvas.getContext('2d');
+                const mainImg = new Image();
+                mainImg.crossOrigin = "Anonymous"; 
+                mainImg.onload = () => {
+                mainCtx.drawImage(mainImg, 0, 0, 100, 100);
+                };
+                mainImg.src = icon.url_icon;
+
+                if (icon.small_svg_url) {
+                const smallCanvas = iconItem.querySelector('.small-image');
+                const smallCtx = smallCanvas.getContext('2d');
+                const smallImg = new Image();
+                smallImg.crossOrigin = "Anonymous";
+                smallImg.onload = () => {
+                    smallCtx.drawImage(smallImg, 0, 0, 50, 50);
+                };
+                smallImg.src = icon.small_svg_url;
+                }
+
+                const dlBtn = iconItem.querySelector('.download-btn');
+                if (dlBtn) {
+                    dlBtn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        if (dlBtn.disabled) return;
+                        dlBtn.disabled = true;
+                        dlBtn.classList.add('disabled');
+                        const originalHTML = dlBtn.innerHTML;
+                        const success = await downloadIcon(icon.url_icon, icon.name);
+                        if (success) {
+                            dlBtn.classList.add('downloaded');
+                            dlBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                            setTimeout(() => {
+                                dlBtn.classList.remove('downloaded');
+                                dlBtn.innerHTML = originalHTML;
+                                dlBtn.disabled = false;
+                                dlBtn.classList.remove('disabled');
+                            }, 2000);
+                        } else {
+                            setTimeout(() => {
+                                dlBtn.disabled = false;
+                                dlBtn.classList.remove('disabled');
+                            }, 1200);
                         }
-                    }
+                    });
+                }
 
-                    // Tautan Author
-                    const authorName = icon.author ? icon.author : 'Community';
-                    const authorUrl = icon.author ? `https://github.com/${icon.author}` : 'https://github.com/icon11-community';
+                const openBtn = iconItem.querySelector('.open-btn');
+                if (openBtn) {
+                    openBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openIcon(icon.url_icon);
+                    });
+                }
 
-                    iconItem.innerHTML = `
-                    <button class="open-btn" title="Open icon in new tab" aria-label="Open icon in new tab">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M10.0002 5H8.2002C7.08009 5 6.51962 5 6.0918 5.21799C5.71547 5.40973 5.40973 5.71547 5.21799 6.0918C5 6.51962 5 7.08009 5 8.2002V15.8002C5 16.9203 5 17.4801 5.21799 17.9079C5.40973 18.2842 5.71547 18.5905 6.0918 18.7822C6.5192 19 7.07899 19 8.19691 19H15.8031C16.921 19 17.48 19 17.9074 18.7822C18.2837 18.5905 18.5905 18.2839 18.7822 17.9076C19 17.4802 19 16.921 19 15.8031V14M20 9V4M20 4H15M20 4L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                    </button>
-                    <button class="download-btn" title="Download icon" aria-label="Download icon">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                    </button>
-                    <div class="icon-image-container">
-                        <canvas width="100" height="100"></canvas>
-                        ${icon.small_svg_url && icon.small_svg_url !== "" ? `<canvas width="50" height="50" class="small-image"></canvas>` : ''}
-                    </div>
-                    <p class="icon-name">${formatIconName(icon.name)}</p>
-                    <div class="details">
-                        <div class="details-subcontainer">
-                            <span class="details-text">Size:</span>
-                            <span class="details-value">${(parseInt(icon.size) / (1024 * 1024)).toFixed(2)} MB</span>
-                        </div>
-                        <div class="details-subcontainer">
-                            <span class="details-text">Date:</span>
-                            <span class="details-value">${displayDate}</span>
-                        </div>
-                        <div class="details-subcontainer">
-                            <span class="details-text">Author:</span>
-                            <span class="details-value">
-                                <a href="${authorUrl}" target="_blank" class="author-link" onclick="event.stopPropagation()">
-                                    ${authorName}
-                                </a>
-                            </span>
-                        </div>
-                    </div>
-                    `;
-
-                    const mainCanvas = iconItem.querySelector('canvas');
-                    const mainCtx = mainCanvas.getContext('2d');
-                    const mainImg = new Image();
-                    mainImg.crossOrigin = "Anonymous"; 
-                    mainImg.onload = () => {
-                        mainCtx.drawImage(mainImg, 0, 0, 100, 100);
-                    };
-                    mainImg.src = icon.url_icon;
-
-                    if (icon.small_svg_url) {
-                        const smallCanvas = iconItem.querySelector('.small-image');
-                        const smallCtx = smallCanvas.getContext('2d');
-                        const smallImg = new Image();
-                        smallImg.crossOrigin = "Anonymous";
-                        smallImg.onload = () => {
-                            smallCtx.drawImage(smallImg, 0, 0, 50, 50);
-                        };
-                        smallImg.src = icon.small_svg_url;
-                    }
-
-                    const dlBtn = iconItem.querySelector('.download-btn');
-                    if (dlBtn) {
-                        dlBtn.addEventListener('click', async (e) => {
-                            e.stopPropagation();
-                            if (dlBtn.disabled) return;
-                            dlBtn.disabled = true;
-                            dlBtn.classList.add('disabled');
-                            const originalHTML = dlBtn.innerHTML;
-                            const success = await downloadIcon(icon.url_icon, icon.name);
-                            if (success) {
-                                dlBtn.classList.add('downloaded');
-                                dlBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-                                setTimeout(() => {
-                                    dlBtn.classList.remove('downloaded');
-                                    dlBtn.innerHTML = originalHTML;
-                                    dlBtn.disabled = false;
-                                    dlBtn.classList.remove('disabled');
-                                }, 2000);
-                            } else {
-                                setTimeout(() => {
-                                    dlBtn.disabled = false;
-                                    dlBtn.classList.remove('disabled');
-                                }, 1200);
-                            }
-                        });
-                    }
-
-                    const openBtn = iconItem.querySelector('.open-btn');
-                    if (openBtn) {
-                        openBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            openIcon(icon.url_icon);
-                        });
-                    }
-
-                    iconItem.addEventListener('click', () => showDetails(iconItem));
-                    container.appendChild(iconItem);
-                });
-                clearSkeletons();
+                iconItem.addEventListener('click', () => showDetails(iconItem));
+                container.appendChild(iconItem);
+            });
+            clearSkeletons();
             }, 500);
         }
 
@@ -741,8 +668,6 @@
         }
 
         function formatIconName(name) {
-            // Memberikan proteksi fallback nama jika data 'name' kosong/undefined di JSON
-            if(!name) return 'Unknown';
             return name.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
         }
 
