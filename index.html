@@ -5,400 +5,430 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Over 0 icons Folder11 for Windows</title>
     <link rel="icon" href="https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/ico/folder11.ico">
+    
     <style>
+        /* Windows 11 Light Mode Variables (Default) */
         :root {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --secondary-text-color: #b3b3b3;
-            --card-bg-color: #1e1e1e;
-            --card-border-color: #333;
-            --hover-color: #555;
-            --skeleton-light: #333;
-            --skeleton-dark: #222;
+            --bg-color: #faf9f8;
+            --text-color: #242424;
+            --secondary-text-color: #5d5d5d;
+            
+            /* Fluent UI Materials */
+            --card-bg-color: rgba(255, 255, 255, 0.7);
+            --card-border-color: rgba(0, 0, 0, 0.05);
+            --control-bg-color: rgba(255, 255, 255, 0.9);
+            --control-border-color: rgba(0, 0, 0, 0.1);
+            
+            /* Overlay Blur Variables */
+            --overlay-bg: rgba(255, 255, 255, 0.7);
+            
+            /* Dialog Variables */
+            --dialog-bg: #ffffff;
+            --dialog-footer-bg: #f3f2f1;
+            --dialog-border: rgba(0, 0, 0, 0.05);
+            
+            /* Combobox Dropdown Variables */
+            --dropdown-bg: #ffffff;
+            --dropdown-border: rgba(0, 0, 0, 0.1);
+            
+            /* Accents */
+            --accent-color: #005fb8;
+            --accent-text-color: #ffffff;
+            --accent-hover: #00529e;
+            
+            /* States */
+            --hover-color: rgba(0, 0, 0, 0.04);
+            --active-color: rgba(0, 0, 0, 0.08);
+            
+            /* Shadows & Skeletons */
+            --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.04), 0 8px 16px rgba(0, 0, 0, 0.04);
+            --shadow-flyout: 0 8px 16px rgba(0, 0, 0, 0.14);
+            --shadow-dialog: 0 32px 64px rgba(0,0,0,0.2);
+            --skeleton-light: #e0e0e0;
+            --skeleton-dark: #f0f0f0;
+            
+            /* Selection */
+            --selection-bg: rgba(0, 95, 184, 0.1);
+            --selection-border: var(--accent-color);
         }
+
+        /* Windows 11 Dark Mode Variables */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #202020;
+                --text-color: #ffffff;
+                --secondary-text-color: #a0a0a0;
+                
+                --card-bg-color: rgba(255, 255, 255, 0.05);
+                --card-border-color: rgba(255, 255, 255, 0.08);
+                --control-bg-color: rgba(255, 255, 255, 0.06);
+                --control-border-color: rgba(255, 255, 255, 0.1);
+                
+                --overlay-bg: rgba(32, 32, 32, 0.75);
+                
+                --dialog-bg: #2c2c2c;
+                --dialog-footer-bg: #202020;
+                --dialog-border: rgba(255, 255, 255, 0.08);
+                
+                --dropdown-bg: #2c2c2c;
+                --dropdown-border: rgba(255, 255, 255, 0.08);
+                
+                --accent-color: #60cdff;
+                --accent-text-color: #000000;
+                --accent-hover: #58bbf5;
+                
+                --hover-color: rgba(255, 255, 255, 0.06);
+                --active-color: rgba(255, 255, 255, 0.09);
+                
+                --shadow-subtle: 0 4px 8px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.15);
+                --shadow-flyout: 0 8px 16px rgba(0, 0, 0, 0.28);
+                --shadow-dialog: 0 32px 64px rgba(0,0,0,0.4);
+                --skeleton-light: #333;
+                --skeleton-dark: #222;
+                
+                --selection-bg: rgba(96, 205, 255, 0.1);
+                --selection-border: var(--accent-color);
+            }
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI Variable Text', 'Segoe UI Variable Display', 'Segoe UI', Tahoma, Geneva, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
             padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        header {
-            text-align: center;
-            padding: 15px;
-            position: relative;
+
+        h1, .fluent-dialog-title, .icon-name {
+            font-family: 'Segoe UI Variable Display', 'Segoe UI', Tahoma, Geneva, sans-serif;
         }
+
+        /* --- FLUENT DIALOG STYLES (GLOBAL) --- */
+        .dialog-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; opacity: 0; visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .dialog-overlay.show { opacity: 1; visibility: visible; }
+
+        .fluent-dialog {
+            background-color: var(--dialog-bg); border: 1px solid var(--dialog-border);
+            border-radius: 8px; width: 90%; max-width: 480px; box-shadow: var(--shadow-dialog);
+            overflow: hidden; transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+            display: flex; flex-direction: column;
+        }
+
+        .dialog-overlay.show .fluent-dialog { transform: scale(1); }
+
+        .fluent-dialog-content { padding: 24px; }
+        .fluent-dialog-title { margin: 0 0 12px 0; font-size: 20px; font-weight: 600; }
+        .fluent-dialog-body { margin: 0 0 20px 0; font-size: 14px; line-height: 1.5; color: var(--text-color); }
+
+        .fluent-dialog-footer {
+            background-color: var(--dialog-footer-bg); padding: 24px;
+            display: flex; justify-content: flex-end; gap: 8px;
+            border-top: 1px solid var(--dialog-border);
+        }
+
+        .fluent-btn {
+            padding: 6px 20px; border-radius: 4px; font-size: 14px; font-weight: 500;
+            cursor: pointer; transition: background-color 0.15s ease, transform 0.1s ease;
+            font-family: inherit; display: inline-flex; align-items: center; justify-content: center;
+        }
+        
+        .fluent-btn:active { transform: scale(0.96); }
+        .fluent-btn-primary { background-color: var(--accent-color); color: var(--accent-text-color); border: 1px solid transparent; }
+        .fluent-btn-primary:hover { background-color: var(--accent-hover); }
+        .fluent-btn-secondary { background-color: var(--control-bg-color); color: var(--text-color); border: 1px solid var(--control-border-color); }
+        .fluent-btn-secondary:hover { background-color: var(--hover-color); }
+        .fluent-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .badge-container { display: flex; justify-content: center; margin-top: 16px; }
+        .store-badge-link { display: inline-block; transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); }
+        .store-badge-link:hover { transform: scale(1.05); }
+        .store-badge-link:active { transform: scale(0.96); }
+
+        /* --- AUTHOR DIALOG & SCROLL --- */
+        .fluent-dialog.wide-dialog { max-width: 840px; width: 95%; }
+
+        .author-dialog-header {
+            display: flex; align-items: center; gap: 16px; margin-bottom: 0px; padding-bottom: 0px;
+        }
+
+        .author-dialog-avatar-large {
+            width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
+            border: 1px solid var(--control-border-color); transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .author-dialog-avatar-large:hover { transform: scale(1.05); box-shadow: var(--shadow-subtle); }
+
+        /* TAB STYLING FLUENT UI */
+        .fluent-tabs {
+            display: flex; gap: 24px; margin-top: 20px; margin-bottom: 16px;
+            border-bottom: 1px solid var(--dialog-border); padding: 0 8px;
+        }
+        .fluent-tab {
+            background: transparent; border: none; color: var(--secondary-text-color);
+            font-size: 14px; font-weight: 600; padding: 8px 4px; cursor: pointer;
+            position: relative; transition: color 0.2s ease; font-family: inherit;
+        }
+        .fluent-tab:hover { color: var(--text-color); }
+        .fluent-tab.active { color: var(--text-color); }
+        .fluent-tab.active::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+            height: 3px; background-color: var(--accent-color); border-radius: 3px 3px 0 0;
+        }
+
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; animation: fadeInTab 0.3s ease; }
+
+        @keyframes fadeInTab { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        .scrollable-body { max-height: 55vh; overflow-y: auto; padding-right: 8px; margin-right: -8px; margin-bottom: 0; }
+        .scrollable-body::-webkit-scrollbar { width: 6px; }
+        .scrollable-body::-webkit-scrollbar-track { background: transparent; }
+        .scrollable-body::-webkit-scrollbar-thumb { background-color: var(--control-border-color); border-radius: 6px; }
+        .scrollable-body::-webkit-scrollbar-thumb:hover { background-color: var(--secondary-text-color); }
+
+        /* --- HEADER & MAIN --- */
+        header { text-align: center; padding: 20px 15px; position: relative; }
+        h1 { font-weight: 600; margin-bottom: 24px; }
+
         #github-logo {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            text-decoration: none;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--card-bg-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            position: absolute; top: 20px; right: 20px; text-decoration: none; color: var(--text-color);
+            display: flex; align-items: center; justify-content: center; background-color: var(--control-bg-color);
+            border: 1px solid var(--control-border-color); border-radius: 8px; width: 40px; height: 40px;
+            box-shadow: var(--shadow-subtle); transition: background-color 0.2s ease;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
-        #github-logo:hover {
-            background-color: var(--hover-color);
-            transform: scale(1.1);
-        }
+        #github-logo:hover { background-color: var(--hover-color); }
+        #github-logo:active { background-color: var(--active-color); transform: scale(0.96); }
+
+        /* --- SEARCH & CUSTOM COMBOBOX --- */
         #search-container {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-            margin: 20px auto 0;
-            background-color: var(--card-bg-color);
-            border: 1px solid var(--card-border-color);
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        #search-bar {
-            flex: 1;
-            padding: 10px;
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            font-size: 14px;
-        }
-        #search-bar::placeholder {
-            color: var(--secondary-text-color);
+            display: flex; align-items: center; width: 100%; max-width: 480px; margin: 0 auto;
+            background-color: var(--control-bg-color); border: 1px solid var(--control-border-color);
+            border-bottom: 1px solid var(--control-border-color); border-radius: 4px; box-shadow: var(--shadow-subtle);
+            position: relative; transition: border-bottom-color 0.2s ease;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 50;
         }
 
-        #sort-select {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            font-size: 12px;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            position: relative;
-        }
+        #search-container.focus-within { border-bottom: 2px solid var(--accent-color); padding-bottom: -1px; }
+        #search-bar { flex: 1; padding: 8px 12px; background: transparent; border: none; color: var(--text-color); font-size: 14px; outline: none; font-family: inherit; }
+        #search-bar::placeholder { color: var(--secondary-text-color); }
 
-        main {
-            padding: 20px;
+        .custom-select-wrapper { position: relative; user-select: none; border-left: 1px solid var(--control-border-color); width: 130px; }
+        .custom-select-trigger { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 13px; color: var(--text-color); cursor: pointer; transition: background-color 0.2s ease; border-radius: 0 4px 4px 0; }
+        .custom-select-trigger:hover { background-color: var(--hover-color); }
+        .custom-select-trigger svg { width: 12px; height: 12px; transition: transform 0.2s ease; }
+        .custom-select-wrapper.open .custom-select-trigger svg { transform: rotate(180deg); }
+
+        .custom-options {
+            position: absolute; top: calc(100% + 4px); right: 0; width: 180px; background-color: var(--dropdown-bg); border: 1px solid var(--dropdown-border); border-radius: 8px; box-shadow: var(--shadow-flyout); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); padding: 4px; z-index: 100;
         }
-        .icon-name {
-            cursor: default;
-        }
-        .icon-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-            margin: 20px auto;
-            max-width: 1200px;
-        }
+        .custom-select-wrapper.open .custom-options { opacity: 1; visibility: visible; transform: translateY(0); }
+        .custom-option { padding: 8px 12px 8px 16px; font-size: 13px; color: var(--text-color); cursor: pointer; border-radius: 4px; margin-bottom: 2px; position: relative; transition: background-color 0.15s ease; }
+        .custom-option:last-child { margin-bottom: 0; }
+        .custom-option:hover { background-color: var(--hover-color); }
+        .custom-option.selected { background-color: var(--hover-color); }
+        .custom-option.selected::before { content: ''; position: absolute; left: 4px; top: 50%; transform: translateY(-50%); height: 16px; width: 3px; background-color: var(--accent-color); border-radius: 4px; }
+
+        /* --- ICONS GRID (DIGUNAKAN UNTUK MAIN & HISTORY) --- */
+        main { padding: 20px; }
+        .icon-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin: 20px auto; max-width: 1200px; }
+
         .icon-item {
-            background-color: var(--card-bg-color);
-            padding: 25px 15px 15px 15px;
-            border: 1px solid var(--card-border-color);
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            position: relative;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards ease;
+            background-color: var(--card-bg-color); padding: 24px 16px 16px 16px; border: 1px solid var(--card-border-color);
+            border-radius: 8px; text-align: center; box-shadow: var(--shadow-subtle); position: relative;
+            opacity: 0; animation: fadeIn 0.4s forwards ease; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.2s ease, background-color 0.2s ease; overflow: hidden; 
+            cursor: pointer;
+        }
+
+        .icon-item:hover { background-color: var(--hover-color); }
+
+        .author-avatar-link {
+            position: absolute; top: 10px; left: 10px; width: 24px !important; height: 24px !important; z-index: 10; display: inline-block; border-radius: 50%; cursor: pointer;
+        }
+        .author-avatar {
+            width: 24px !important; height: 24px !important; border-radius: 50% !important; object-fit: cover !important; border: 1px solid var(--control-border-color); background-color: var(--control-bg-color); transition: box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+        .author-avatar-link:hover .author-avatar { box-shadow: var(--shadow-subtle); opacity: 0.9; }
+        
+        .download-btn, .open-btn { 
+            position: absolute; top: 10px; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; background-color: var(--control-bg-color); border: 1px solid var(--control-border-color); border-radius: 4px; color: var(--text-color); cursor: pointer; z-index: 40; transition: background-color 0.15s ease, opacity 0.15s ease; opacity: 0; pointer-events: none; 
+        }
+        .download-btn svg, .open-btn svg { width: 12px; height: 12px; display: block; color: currentColor; }
+        .download-btn { right: 10px; }
+        .open-btn { right: 36px; } 
+
+        .icon-item:hover .download-btn, .icon-item:hover .open-btn, .icon-item.selected .download-btn, .icon-item.selected .open-btn { opacity: 1; pointer-events: auto; }
+        .download-btn:hover, .open-btn:hover { background-color: var(--hover-color); }
+        .download-btn:active, .open-btn:active { background-color: var(--active-color); transform: scale(0.96); }
+        .download-btn.downloaded { background-color: #107c41; border-color: #107c41; color: #ffffff; }
+        .download-btn.disabled { opacity: 0.5; pointer-events: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .icon-image-container canvas { margin: auto; border-radius: 8px; }
+
+        p.icon-name {
+            font-size: 14px; color: var(--text-color); margin: 12px 0 4px; font-weight: 600; cursor: default;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block;
+        }
+
+        /* OVERLAY BLUR */
+        .icon-item .details { 
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: 0; text-align: left; 
+            background-color: var(--overlay-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 30; padding: 20px; border-radius: 8px; display: flex; flex-direction: column; 
+            justify-content: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; 
         }
         
-        .download-btn,
-        .open-btn {
-            position: absolute;
-            top: 8px;
-            width: 30px;
-            height: 30px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--card-bg-color);
-            border: 1px solid var(--card-border-color);
-            border-radius: 6px;
-            color: var(--text-color);
-            cursor: pointer;
-            z-index: 20;
-            transition: background-color 0.18s ease, transform 0.12s ease, opacity 0.12s ease;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(-4px) scale(0.98);
-        }
-
-        .download-btn svg,
-        .open-btn svg {
-            width: 16px;
-            height: 16px;
-            display: block;
-            color: var(--text-color);
-        }
-
-        .download-btn { right: 8px; }
-        .open-btn { right: 44px; }
-
-        .icon-item:hover .download-btn,
-        .icon-item:hover .open-btn {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0) scale(1);
-        }
-
-        .icon-item.selected .download-btn,
-        .icon-item.selected .open-btn {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0) scale(1);
-        }
-
-        .download-btn:hover,
-        .open-btn:hover {
-            background-color: var(--hover-color);
-            transform: scale(1.06);
-        }
-
-        .download-btn.downloaded {
-            background-color: #2e8b57;
-            border-color: rgba(46,139,87,0.6);
-            color: #ffffff;
-        }
-        .download-btn.disabled {
-            opacity: 0.6;
-            pointer-events: none;
-            transform: translateY(0) scale(0.98);
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .icon-item img {
-            width: 100px;
-            height: 100px;
-            margin: auto;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-        .icon-item p {
-            font-size: 16px;
-            color: var(--text-color);
-            margin: 10px 0 5px;
-            font-weight: 500;
-        }
-        .icon-item .details {
-            display: none;
-            margin-top: 10px;
-            text-align: center;
-        }
-        .details-text {
-            color: #cfcfcf;
-            font-size: 13px;
-            flex: 0 1 auto;
-            margin-right: 3px;
-        }
-        .details-subcontainer {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            font-size: 13px;
-            line-height: 1.2;
-            margin-bottom: 3px;
-            color: #f0f0f0;
-        }
-        .details-value {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .icon-item.selected .details { opacity: 1; pointer-events: auto; }
+        
+        .details-text { color: var(--secondary-text-color); font-size: 12px; flex: 0 1 auto; margin-right: 3px; }
+        .details-subcontainer { display: flex; align-items: center; width: 100%; font-size: 12px; line-height: 1.4; color: var(--text-color); }
+        .details-value { display: flex; align-items: center; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
         .details-value::before {
-            content:         '..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................';
-            color: #545454;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-right: 3px;
-            flex-shrink: 1;
-        }
-        .skeleton-item {
-            background-color: var(--card-bg-color);
-            padding: 15px;
-            border: 1px solid var(--card-border-color);
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            position: relative;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards ease;
-        }
-        .skeleton {
-            background: linear-gradient(90deg, var(--skeleton-dark) 25%, var(--skeleton-light) 50%, var(--skeleton-dark) 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
-        }
-        @keyframes skeleton-loading {
-            from {
-                background-position: 200% 0;
-            }
-            to {
-                background-position: -200% 0;
-            }
-        }
-        .skeleton-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 8px;
-            margin: auto;
-        }
-        .skeleton-text {
-            height: 16px;
-            width: 80%;
-            margin: 10px auto 5px;
-            border-radius: 4px;
-        }
-        .skeleton-size {
-            height: 12px;
-            width: 40%;
-            margin: 0 auto;
-            border-radius: 4px;
-        }
-        #search-container {
-            transition: margin-right 0.3s ease;
-        }
-
-        #search-container.shifted {
-            margin-right: 60px;
-        }
-        #scroll-to-top-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--card-bg-color);
-            border: 1px solid var(--card-border-color);
-            color: var(--text-color);
-            border-radius: 6px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-            z-index: 1000; /* Ensure the button is always in front */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        #scroll-to-top-btn:hover {
-            background-color: var(--hover-color);
-            color: var(--text-color);
-        }
-
-        #scroll-to-top-btn.show {
-            opacity: 1;
-        }
-
-        .icon-image-container {
-            position: relative;
-            display: inline-block;
-            transform-origin: center;
-            transition: transform 200ms cubic-bezier(.2,.9,.2,1);
-        }
-
-        .icon-item:hover .icon-image-container,
-        .icon-item.selected .icon-image-container {
-            transform: scale(1.2);
-        }
-
-        .icon-item.selected {
-            border-color: rgba(46,139,87,0.45);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.45), 0 0 0 4px rgba(46,139,87,0.04);
-        }
-
-        .icon-item.selected .icon-image-container {
-            animation: selectPop 260ms cubic-bezier(.2,.9,.2,1);
-            transform: scale(1.2);
-        }
-
-        @keyframes selectPop {
-            0% { transform: scale(1.05); }
-            50% { transform: scale(1.28); }
-            100% { transform: scale(1.2); }
-        }
-
-        .icon-item:hover .icon-image-container .small-image:not(:hover),
-        .icon-item.selected .icon-image-container .small-image:not(:hover) {
-            transform: none !important;
-        }
-
-        .icon-image-container .small-image {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 50px;
-            height: 50px;
-            transition: transform 0.24s ease;
+            content: '..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................';
+            color: var(--secondary-text-color); opacity: 0.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 3px; flex-shrink: 1;
         }
         
-        .icon-image-container .small-image:hover {
-            transform: scale(1.2); 
-        }
-        .icon-maker-button {
-            background-color: var(--card-bg-color);
-            border: 1px solid var(--card-border-color);
-            color: var(--text-color);
-            border-radius: 6px;
-            padding: 5px 10px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            position: absolute;
-            top: 15px;
-            right: 70px;
-        }
+        .author-link { color: var(--accent-color); text-decoration: none; transition: color 0.15s ease; cursor: pointer;}
+        .author-link:hover { text-decoration: underline; color: var(--accent-hover); }
 
-        .icon-maker-button:hover {
-            background-color: var(--hover-color);
-            transform: scale(1.1);
-        }
+        .skeleton-item { background-color: var(--card-bg-color); padding: 16px; border: 1px solid var(--card-border-color); border-radius: 8px; text-align: center; box-shadow: var(--shadow-subtle); }
+        .skeleton { background: linear-gradient(90deg, var(--skeleton-dark) 25%, var(--skeleton-light) 50%, var(--skeleton-dark) 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; }
+        @keyframes skeleton-loading { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+        .skeleton-image { width: 96px; height: 96px; border-radius: 8px; margin: auto; }
+        .skeleton-text { height: 14px; width: 70%; margin: 12px auto 8px; border-radius: 4px; }
+        .skeleton-size { height: 12px; width: 40%; margin: 0 auto; border-radius: 4px; }
+
+        #scroll-to-top-btn { position: fixed; bottom: 24px; right: 24px; background-color: var(--control-bg-color); border: 1px solid var(--control-border-color); color: var(--text-color); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.2s ease, background-color 0.2s ease; z-index: 1000; box-shadow: var(--shadow-subtle); backdrop-filter: blur(10px); }
+        #scroll-to-top-btn:hover { background-color: var(--hover-color); }
+        #scroll-to-top-btn:active { transform: scale(0.95); }
+        #scroll-to-top-btn.show { opacity: 1; }
+
+        .icon-image-container { position: relative; display: inline-block; transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); }
+        .icon-item:hover .icon-image-container, .icon-item.selected .icon-image-container { transform: translateY(-4px); }
+        .icon-item.selected { background-color: var(--selection-bg); border-color: var(--selection-border); }
+        .icon-item.selected .icon-image-container { transform: translateY(-4px); }
+        .icon-image-container .small-image { position: absolute; bottom: 0px; right: 0px; width: 44px; height: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+
+        .icon-maker-button { background-color: var(--accent-color); border: 1px solid transparent; color: var(--accent-text-color); border-radius: 4px; padding: 6px 16px; font-size: 14px; font-weight: 500; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: background-color 0.15s ease; position: absolute; top: 20px; right: 76px; }
+        .icon-maker-button:hover { background-color: var(--accent-hover); }
+        .icon-maker-button:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
+
+    <!-- Fluent Dialog Promo -->
+    <div id="promo-dialog-overlay" class="dialog-overlay">
+        <div class="fluent-dialog">
+            <div class="fluent-dialog-content">
+                <h2 class="fluent-dialog-title">Get Fold11</h2>
+                <p class="fluent-dialog-body">Ready to customize your Windows experience? Download the Fold11 app from the Microsoft Store to easily apply these icons to your folders.</p>
+                <div class="badge-container">
+                    <a href="ms-windows-store://pdp/?ProductId=9NN3SBFDK83C" class="store-badge-link" aria-label="Download Fold11 from Microsoft Store">
+                        <img src="https://get.microsoft.com/images/en-us%20light.svg" width="200" alt="Microsoft Store Badge"/>
+                    </a>
+                </div>
+            </div>
+            <div class="fluent-dialog-footer">
+                <button id="close-promo-dialog-btn" class="fluent-btn fluent-btn-primary">Continue to Gallery</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fluent Dialog Author Profile with Tabs -->
+    <div id="author-dialog-overlay" class="dialog-overlay">
+        <div class="fluent-dialog wide-dialog">
+            <div class="fluent-dialog-content" style="padding-bottom: 0;">
+                <div class="author-dialog-header">
+                    <a href="#" id="author-dialog-link" target="_blank" title="View GitHub Profile">
+                        <img id="author-dialog-avatar" src="" alt="Author" class="author-dialog-avatar-large">
+                    </a>
+                    <div class="author-dialog-info">
+                        <h2 id="author-dialog-name" class="fluent-dialog-title" style="margin-bottom: 2px;"></h2>
+                        <p id="author-dialog-count" style="margin: 0; font-size: 13px; color: var(--secondary-text-color);"></p>
+                    </div>
+                </div>
+                
+                <!-- Fluent Tabs -->
+                <div class="fluent-tabs" id="author-tabs">
+                    <button class="fluent-tab active" data-tab="current">Current Icons</button>
+                    <button class="fluent-tab" data-tab="history">History / Older Versions</button>
+                </div>
+                
+                <!-- Scroll Area for Tab Panes -->
+                <div class="fluent-dialog-body scrollable-body" id="dialog-scroll-area">
+                    <!-- Pane 1: Current -->
+                    <div id="author-tab-current" class="tab-pane active">
+                        <div id="author-icons-container" class="icon-list author-grid"></div>
+                    </div>
+                    <!-- Pane 2: History (Sekarang menggunakan icon-list agar berbentuk Grid) -->
+                    <div id="author-tab-history" class="tab-pane">
+                        <div id="author-history-container" class="icon-list author-grid"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="fluent-dialog-footer">
+                <button id="close-author-dialog-btn" class="fluent-btn fluent-btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fluent Dialog History (GRID VIEW FOR SPECIFIC ICON) -->
+    <div id="history-dialog-overlay" class="dialog-overlay">
+        <div class="fluent-dialog wide-dialog">
+            <div class="fluent-dialog-content">
+                <h2 id="history-dialog-title" class="fluent-dialog-title">Icon History</h2>
+                <div class="fluent-dialog-body scrollable-body">
+                    <!-- Menggunakan class icon-list untuk membuat tampilan grid otomatis -->
+                    <div id="history-list-container" class="icon-list author-grid"></div>
+                </div>
+            </div>
+            <div class="fluent-dialog-footer">
+                <button id="close-history-dialog-btn" class="fluent-btn fluent-btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
     <header>
         <a href="https://github.com/icon11-community" target="_blank" id="github-logo" title="Visit our GitHub">
-            <svg height="32" aria-hidden="true" viewBox="0 0 24 24" version="1.1" width="32" data-view-component="true" class="octicon octicon-mark-github v-align-middle color-fg-default" fill="white">
+            <svg height="24" aria-hidden="true" viewBox="0 0 24 24" version="1.1" width="24" class="octicon octicon-mark-github" fill="currentColor">
                 <path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path>
             </svg>
         </a>
         <h1>Folder11 Community</h1>
+        
         <div id="search-container">
             <input type="text" id="search-bar" placeholder="Search icons...">
-            <select id="sort-select">
-                <option value="sort">Sort</option>
-                <option value="a-z">A-Z</option>
-                <option value="z-a">Z-A</option>
-                <option value="date-newest">Newest</option>
-                <option value="date-oldest">Oldest</option>
-            </select>
+            <div class="custom-select-wrapper" id="custom-sort">
+                <div class="custom-select-trigger">
+                    <span class="custom-select-text">Sort</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="custom-options">
+                    <div class="custom-option selected" data-value="sort">Sort</div>
+                    <div class="custom-option" data-value="a-z">A-Z</div>
+                    <div class="custom-option" data-value="z-a">Z-A</div>
+                    <div class="custom-option" data-value="date-newest">Newest</div>
+                    <div class="custom-option" data-value="date-oldest">Oldest</div>
+                </div>
+            </div>
         </div>
+
         <a href="icon-maker.html" id="icon-maker-link" class="icon-maker-button">Icon Maker</a>
         <button id="scroll-to-top-btn" title="Scroll to Top">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 19V5M5 12l7-7 7 7"/>
             </svg>
         </button>
@@ -407,80 +437,23 @@
     <main>
         <div id="icons-container" class="icon-list"></div>
     </main>
+    
     <script>
         const jsonURL = 'https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/Folder11.json';
         let iconsCache = [];
         let currentPage = 0;
         const iconsPerPage = 48;
-        let currentDetailsElement = null;
         let currentSortOption = 'sort';
         let currentSearchTerm = '';
 
-        window.addEventListener('scroll', () => {
-            const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
-            if (document.documentElement.scrollTop > 100) {
-                scrollToTopBtn.classList.add('show');
-            } else {
-                scrollToTopBtn.classList.remove('show');
-            }
-        });
+        /* DIALOG INFINITE SCROLL VARIABLES */
+        let dialogIconsCache = [];
+        let dialogCurrentPage = 0;
+        const dialogIconsPerPage = 48;
 
-        document.getElementById('scroll-to-top-btn').addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        async function fetchIcons() {
-            displaySkeletons(6);
-            try {
-                const response = await fetch(jsonURL);
-                const data = await response.json();
-                iconsCache = data.icons;
-                updatePageTitleAndMeta(iconsCache.length);
-                displayIcons();
-            } catch (error) {
-                console.error('Error fetching icons:', error);
-                clearSkeletons();
-            }
-        }
-
-        function filterIcons(searchTerm) {
-            currentSearchTerm = searchTerm;
-            let filteredIcons = iconsCache.filter(icon =>
-                formatIconName(icon.name).toLowerCase().includes(searchTerm.toLowerCase())
-            );
-
-            filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
-            currentPage = 0;
-            displayIcons(filteredIcons, true);
-        }
-
-        function sortIcons(sortOption) {
-            currentSortOption = sortOption;
-            let filteredIcons = iconsCache.filter(icon =>
-                formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase())
-            );
-            filteredIcons = sortIconsInternal(filteredIcons, sortOption);
-            currentPage = 0;
-            displayIcons(filteredIcons, true);
-        }
-
-        function sortIconsInternal(icons, sortOption) {
-            switch (sortOption) {
-                case 'a-z':
-                    return icons.sort((a, b) => formatIconName(a.name).localeCompare(formatIconName(b.name)));
-                case 'z-a':
-                    return icons.sort((a, b) => formatIconName(b.name).localeCompare(formatIconName(a.name)));
-                case 'date-newest':
-                    return icons.sort((a, b) => new Date(b.date) - new Date(a.date));
-                case 'date-oldest':
-                    return icons.sort((a, b) => new Date(a.date) - new Date(b.date));
-                default:
-                    return icons;
-            }
-        }
+        /* TAB LOGIC STATE */
+        let currentActiveAuthor = '';
+        let currentExpandedCard = null;
 
         function debounce(func, delay) {
             let timeout;
@@ -489,59 +462,24 @@
                 timeout = setTimeout(() => func.apply(this, args), delay);
             };
         }
-        document.addEventListener('DOMContentLoaded', () => {
-            const sortSelect = document.getElementById('sort-select');
-            sortSelect.addEventListener('click', () => {
-                const options = sortSelect.querySelectorAll('option');
-                options.forEach(option => {
-                    option.style.backgroundColor = 'var(--card-bg-color)';
-                    option.style.color = 'var(--text-color)';
-                    option.style.padding = '10px';
-                });
-            });
-        });
-        document.getElementById('search-bar').addEventListener(
-            'input',
-            debounce((e) => {
-                const searchTerm = e.target.value;
-                filterIcons(searchTerm);
-            }, 300)
-        );
 
-        document.getElementById('sort-select').addEventListener('change', (e) => {
-            const sortOption = e.target.value;
-            sortIcons(sortOption);
-        });
+        /* --- NEW: REUSABLE GRID ITEM BUILDER FOR HISTORY --- */
+        /* Menggunakan style grid card yang persis sama dengan halaman depan */
+        function createHistoryItemElement(hIcon, fallbackAuthorName, fallbackAuthorProfile) {
+            const iconItem = document.createElement('div');
+            iconItem.classList.add('icon-item');
+            
+            const authorName = hIcon.author_name || fallbackAuthorName || 'Community';
+            const authorProfile = hIcon.author_profile || fallbackAuthorProfile || 'https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/ico/folder11.ico';
+            const formattedName = formatIconName(hIcon.name);
 
-        async function fetchStargazersCount() {
-            try {
-                const response = await fetch(githubApiURL);
-                const data = await response.json();
-                const stargazersCount = data.stargazers_count;
-                document.getElementById('stargazers-count').textContent = '★ ' + formatIconCount(stargazersCount);
-            } catch (error) {
-                console.error('Error fetching stargazers count:', error);
-            }
-        }
+            const avatarHtml = `
+            <div class="author-avatar-link" title="View icons by ${authorName}">
+                <img src="${authorProfile}" alt="${authorName}" class="author-avatar" onerror="this.src='https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/ico/folder11.ico'">
+            </div>`;
 
-        function formatIconCount(count) {
-        return count >= 1000 ? `${(count / 1000).toFixed(1)}K` : `${count}`;
-        }
-
-        function displayIcons(filteredIcons = iconsCache, replaceContent = false) {
-            const container = document.getElementById('icons-container');
-            if (replaceContent) {
-            container.innerHTML = '';
-            }
-            displaySkeletons(6);
-            const start = currentPage * iconsPerPage;
-            const end = start + iconsPerPage;
-            const iconsToShow = filteredIcons.slice(start, end);
-            setTimeout(() => {
-            iconsToShow.forEach(icon => {
-                const iconItem = document.createElement('div');
-                iconItem.classList.add('icon-item');
-                iconItem.innerHTML = `
+            iconItem.innerHTML = `
+                ${avatarHtml}
                 <button class="open-btn" title="Open icon in new tab" aria-label="Open icon in new tab">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M10.0002 5H8.2002C7.08009 5 6.51962 5 6.0918 5.21799C5.71547 5.40973 5.40973 5.71547 5.21799 6.0918C5 6.51962 5 7.08009 5 8.2002V15.8002C5 16.9203 5 17.4801 5.21799 17.9079C5.40973 18.2842 5.71547 18.5905 6.0918 18.7822C6.5192 19 7.07899 19 8.19691 19H15.8031C16.921 19 17.48 19 17.9074 18.7822C18.2837 18.5905 18.5905 18.2839 18.7822 17.9076C19 17.4802 19 16.921 19 15.8031V14M20 9V4M20 4H15M20 4L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </button>
@@ -549,107 +487,504 @@
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </button>
                 <div class="icon-image-container">
-                    <canvas width="100" height="100"></canvas>
-                    ${icon.small_svg_url && icon.small_svg_url !== "" ? `<canvas width="50" height="50" class="small-image"></canvas>` : ''}
+                    <canvas width="96" height="96"></canvas>
+                    ${hIcon.small_svg_url && hIcon.small_svg_url !== "" ? `<canvas width="44" height="44" class="small-image"></canvas>` : ''}
                 </div>
-                <p class="icon-name">${formatIconName(icon.name)}</p>
+                <p class="icon-name" title="${formattedName}">${formattedName}</p>
                 <div class="details">
                     <div class="details-subcontainer">
-                    <span class="details-text">Size:</span>
-                    <span class="details-value">${(parseInt(icon.size) / (1024 * 1024)).toFixed(2)} MB</span>
+                        <span class="details-text">Status:</span>
+                        <span class="details-value" style="color: var(--secondary-text-color); font-style: italic;">Older Version</span>
                     </div>
                     <div class="details-subcontainer">
-                    <span class="details-text">Date:</span>
-                    <span class="details-value">${new Date(icon.date).toLocaleDateString()}</span>
+                        <span class="details-text">Size:</span>
+                        <span class="details-value">${(parseInt(hIcon.size) / (1024 * 1024)).toFixed(2)} MB</span>
+                    </div>
+                    <div class="details-subcontainer">
+                        <span class="details-text">Date:</span>
+                        <span class="details-value">${new Date(hIcon.date).toLocaleDateString()}</span>
                     </div>
                 </div>
-                `;
+            `;
 
-                const mainCanvas = iconItem.querySelector('canvas');
-                const mainCtx = mainCanvas.getContext('2d');
-                const mainImg = new Image();
-                mainImg.crossOrigin = "Anonymous"; 
-                mainImg.onload = () => {
-                mainCtx.drawImage(mainImg, 0, 0, 100, 100);
-                };
-                mainImg.src = icon.url_icon;
+            const mainCanvas = iconItem.querySelector('canvas');
+            const mainCtx = mainCanvas.getContext('2d');
+            const mainImg = new Image();
+            mainImg.crossOrigin = "Anonymous"; 
+            mainImg.onload = () => { mainCtx.drawImage(mainImg, 0, 0, 96, 96); };
+            mainImg.src = hIcon.url_icon;
 
-                if (icon.small_svg_url) {
+            if (hIcon.small_svg_url) {
                 const smallCanvas = iconItem.querySelector('.small-image');
                 const smallCtx = smallCanvas.getContext('2d');
                 const smallImg = new Image();
                 smallImg.crossOrigin = "Anonymous";
-                smallImg.onload = () => {
-                    smallCtx.drawImage(smallImg, 0, 0, 50, 50);
-                };
-                smallImg.src = icon.small_svg_url;
-                }
+                smallImg.onload = () => { smallCtx.drawImage(smallImg, 0, 0, 44, 44); };
+                smallImg.src = hIcon.small_svg_url;
+            }
 
-                const dlBtn = iconItem.querySelector('.download-btn');
-                if (dlBtn) {
-                    dlBtn.addEventListener('click', async (e) => {
-                        e.stopPropagation();
-                        if (dlBtn.disabled) return;
-                        dlBtn.disabled = true;
-                        dlBtn.classList.add('disabled');
-                        const originalHTML = dlBtn.innerHTML;
-                        const success = await downloadIcon(icon.url_icon, icon.name);
-                        if (success) {
-                            dlBtn.classList.add('downloaded');
-                            dlBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-                            setTimeout(() => {
-                                dlBtn.classList.remove('downloaded');
-                                dlBtn.innerHTML = originalHTML;
-                                dlBtn.disabled = false;
-                                dlBtn.classList.remove('disabled');
-                            }, 2000);
-                        } else {
-                            setTimeout(() => {
-                                dlBtn.disabled = false;
-                                dlBtn.classList.remove('disabled');
-                            }, 1200);
-                        }
-                    });
-                }
-
-                const openBtn = iconItem.querySelector('.open-btn');
-                if (openBtn) {
-                    openBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        openIcon(icon.url_icon);
-                    });
-                }
-
-                iconItem.addEventListener('click', () => showDetails(iconItem));
-                container.appendChild(iconItem);
+            const openBtn = iconItem.querySelector('.open-btn');
+            openBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openIcon(hIcon.url_icon);
             });
-            clearSkeletons();
+
+            const dlBtn = iconItem.querySelector('.download-btn');
+            dlBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (dlBtn.disabled) return;
+                const originalHTML = dlBtn.innerHTML;
+                dlBtn.disabled = true;
+                dlBtn.classList.add('disabled');
+                const success = await downloadIcon(hIcon.url_icon, hIcon.name + "_history");
+                if(success) {
+                    dlBtn.classList.add('downloaded');
+                    dlBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                    setTimeout(() => {
+                        dlBtn.classList.remove('downloaded');
+                        dlBtn.innerHTML = originalHTML;
+                        dlBtn.disabled = false;
+                        dlBtn.classList.remove('disabled');
+                    }, 2000);
+                } else {
+                    setTimeout(() => { dlBtn.disabled = false; dlBtn.classList.remove('disabled'); }, 1200);
+                }
+            });
+
+            // Klik item membuka details (blur overlay)
+            iconItem.addEventListener('click', () => showDetails(iconItem));
+
+            return iconItem;
+        }
+
+        /* --- DIALOG EVENT LISTENERS --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            const promoDialog = document.getElementById('promo-dialog-overlay');
+            const closePromoBtn = document.getElementById('close-promo-dialog-btn');
+
+            setTimeout(() => { promoDialog.classList.add('show'); }, 500);
+            closePromoBtn.addEventListener('click', () => promoDialog.classList.remove('show'));
+            promoDialog.addEventListener('click', (e) => {
+                if(e.target === promoDialog) promoDialog.classList.remove('show');
+            });
+
+            const authorDialog = document.getElementById('author-dialog-overlay');
+            const closeAuthorBtn = document.getElementById('close-author-dialog-btn');
+
+            closeAuthorBtn.addEventListener('click', () => {
+                authorDialog.classList.remove('show');
+                document.getElementById('author-icons-container').innerHTML = '';
+                document.getElementById('author-history-container').innerHTML = '';
+            });
+            authorDialog.addEventListener('click', (e) => {
+                if(e.target === authorDialog) {
+                    authorDialog.classList.remove('show');
+                    document.getElementById('author-icons-container').innerHTML = '';
+                    document.getElementById('author-history-container').innerHTML = '';
+                }
+            });
+
+            // TAB SWITCHING LOGIC
+            const tabs = document.querySelectorAll('#author-tabs .fluent-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    switchAuthorTab(targetTab);
+                });
+            });
+
+            const historyDialog = document.getElementById('history-dialog-overlay');
+            const closeHistoryBtn = document.getElementById('close-history-dialog-btn');
+
+            closeHistoryBtn.addEventListener('click', () => {
+                historyDialog.classList.remove('show');
+                document.getElementById('history-list-container').innerHTML = '';
+            });
+            historyDialog.addEventListener('click', (e) => {
+                if(e.target === historyDialog) {
+                    historyDialog.classList.remove('show');
+                    document.getElementById('history-list-container').innerHTML = '';
+                }
+            });
+
+            // Infinite Scroll for Author Current Icons Tab
+            document.getElementById('dialog-scroll-area').addEventListener('scroll', function() {
+                const currentTabActive = document.querySelector('#author-tabs .fluent-tab[data-tab="current"]').classList.contains('active');
+                if (currentTabActive) {
+                    if (this.scrollTop + this.clientHeight >= this.scrollHeight - 48) {
+                        if ((dialogCurrentPage + 1) * dialogIconsPerPage < dialogIconsCache.length) {
+                            dialogCurrentPage++;
+                            displayDialogIcons();
+                        }
+                    }
+                }
+            });
+        });
+
+        /* --- SWITCH AUTHOR TAB --- */
+        function switchAuthorTab(tabName) {
+            document.querySelectorAll('#author-tabs .fluent-tab').forEach(tab => {
+                if (tab.getAttribute('data-tab') === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                if (pane.id === `author-tab-${tabName}`) {
+                    pane.classList.add('active');
+                } else {
+                    pane.classList.remove('active');
+                }
+            });
+
+            const countEl = document.getElementById('author-dialog-count');
+            if (tabName === 'current') {
+                countEl.textContent = `${dialogIconsCache.length} current icons`;
+            } else {
+                const historyCount = document.getElementById('author-history-container').children.length;
+                countEl.textContent = `${historyCount} older versions`;
+            }
+        }
+
+        /* --- HISTORY DIALOG FUNCTION (Specific Icon - Now as a Grid) --- */
+        function openHistoryDialog(iconName, historyData) {
+            const dialog = document.getElementById('history-dialog-overlay');
+            // Menjadikan dialog menjadi lebar untuk menampung grid
+            dialog.querySelector('.fluent-dialog').classList.add('wide-dialog'); 
+            
+            const formattedName = formatIconName(iconName);
+            document.getElementById('history-dialog-title').textContent = `History: ${formattedName}`;
+            
+            const container = document.getElementById('history-list-container');
+            container.innerHTML = '';
+            
+            const sortedHistory = historyData.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedHistory.forEach(hIcon => {
+                container.appendChild(createHistoryItemElement(hIcon, null, null));
+            });
+            
+            dialog.classList.add('show');
+        }
+
+        /* --- AUTHOR DIALOG FUNCTION (With Tabs & Grid History) --- */
+        function openAuthorDialog(authorName, authorLink, authorProfile) {
+            currentActiveAuthor = authorName;
+
+            document.getElementById('author-dialog-name').textContent = authorName;
+            document.getElementById('author-dialog-link').href = authorLink;
+            document.getElementById('author-dialog-avatar').src = authorProfile;
+
+            // 1. DATA UNTUK TAB CURRENT
+            dialogIconsCache = iconsCache.filter(icon => {
+                const iName = icon.author_name || 'Community';
+                return iName === authorName && !icon.is_history;
+            });
+            const currentContainer = document.getElementById('author-icons-container');
+            currentContainer.innerHTML = ''; 
+            dialogCurrentPage = 0; 
+            displayDialogIcons();
+
+            // 2. DATA UNTUK TAB HISTORY
+            const authorHistoryIcons = iconsCache.filter(icon => {
+                const iName = icon.author_name || 'Community';
+                return iName === authorName && icon.is_history;
+            });
+            const histContainer = document.getElementById('author-history-container');
+            histContainer.innerHTML = '';
+            const sortedHistory = authorHistoryIcons.sort((a, b) => new Date(b.date) - new Date(a.date));
+            sortedHistory.forEach(hIcon => {
+                histContainer.appendChild(createHistoryItemElement(hIcon, authorName, authorProfile));
+            });
+
+            // 3. RESET KE TAB CURRENT SAAT DIBUKA
+            switchAuthorTab('current');
+
+            document.getElementById('author-dialog-overlay').classList.add('show');
+        }
+
+        function displayDialogIcons() {
+            const container = document.getElementById('author-icons-container');
+            const start = dialogCurrentPage * dialogIconsPerPage;
+            const end = start + dialogIconsPerPage;
+            const iconsToShow = dialogIconsCache.slice(start, end);
+            
+            iconsToShow.forEach(icon => {
+                container.appendChild(createIconElement(icon, false));
+            });
+        }
+
+        /* --- CUSTOM COMBOBOX LOGIC --- */
+        const customSelectWrapper = document.getElementById('custom-sort');
+        const customSelectTrigger = customSelectWrapper.querySelector('.custom-select-trigger');
+        const customOptions = customSelectWrapper.querySelectorAll('.custom-option');
+        const customSelectText = customSelectWrapper.querySelector('.custom-select-text');
+        const searchContainer = document.getElementById('search-container');
+
+        customSelectTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            customSelectWrapper.classList.toggle('open');
+        });
+
+        const searchInput = document.getElementById('search-bar');
+        searchInput.addEventListener('focus', () => searchContainer.classList.add('focus-within'));
+        searchInput.addEventListener('blur', () => searchContainer.classList.remove('focus-within'));
+
+        customOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                customOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                const value = this.getAttribute('data-value');
+                customSelectText.textContent = this.textContent;
+                customSelectWrapper.classList.remove('open');
+                sortIcons(value);
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!customSelectWrapper.contains(e.target)) customSelectWrapper.classList.remove('open');
+        });
+
+        /* --- MAIN GALLERY LOGIC --- */
+        window.addEventListener('scroll', () => {
+            const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+            if (document.documentElement.scrollTop > 100) scrollToTopBtn.classList.add('show');
+            else scrollToTopBtn.classList.remove('show');
+        });
+
+        document.getElementById('scroll-to-top-btn').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        async function fetchIcons() {
+            displaySkeletons(6, document.getElementById('icons-container'));
+            try {
+                const response = await fetch(jsonURL);
+                const data = await response.json();
+                iconsCache = data.icons;
+                
+                const currentIconsCount = iconsCache.filter(i => !i.is_history).length;
+                updatePageTitleAndMeta(currentIconsCount);
+                
+                displayIcons();
+            } catch (error) {
+                console.error('Error fetching icons:', error);
+                clearSkeletons(document.getElementById('icons-container'));
+            }
+        }
+
+        function filterIcons(searchTerm) {
+            currentSearchTerm = searchTerm;
+            let filteredIcons = iconsCache.filter(icon => !icon.is_history && formatIconName(icon.name).toLowerCase().includes(searchTerm.toLowerCase()));
+            filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
+            currentPage = 0;
+            displayIcons(filteredIcons, true);
+        }
+
+        function sortIcons(sortOption) {
+            currentSortOption = sortOption;
+            let filteredIcons = iconsCache.filter(icon => !icon.is_history && formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase()));
+            filteredIcons = sortIconsInternal(filteredIcons, sortOption);
+            currentPage = 0;
+            displayIcons(filteredIcons, true);
+        }
+
+        function sortIconsInternal(icons, sortOption) {
+            switch (sortOption) {
+                case 'a-z': return icons.sort((a, b) => formatIconName(a.name).localeCompare(formatIconName(b.name)));
+                case 'z-a': return icons.sort((a, b) => formatIconName(b.name).localeCompare(formatIconName(a.name)));
+                case 'date-newest': return icons.sort((a, b) => new Date(b.date) - new Date(a.date));
+                case 'date-oldest': return icons.sort((a, b) => new Date(a.date) - new Date(b.date));
+                default: return icons;
+            }
+        }
+
+        document.getElementById('search-bar').addEventListener(
+            'input', debounce((e) => { filterIcons(e.target.value); }, 300)
+        );
+
+        function formatIconCount(count) {
+            return count >= 1000 ? `${(count / 1000).toFixed(1)}K` : `${count}`;
+        }
+
+        /* --- REUSABLE MAIN ICON GENERATOR --- */
+        function createIconElement(icon, showAvatar = true) {
+            const iconItem = document.createElement('div');
+            iconItem.classList.add('icon-item');
+            
+            const authorName = icon.author_name || 'Community';
+            const authorLink = icon.author_link || icon.author || 'https://github.com/icon11-community';
+            const authorProfile = icon.author_profile || 'https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/ico/folder11.ico';
+            const formattedName = formatIconName(icon.name);
+
+            const historyData = iconsCache.filter(h => h.name === icon.name && h.is_history === true);
+            let historyHtml = '';
+            
+            if (historyData.length > 0) {
+                historyHtml = `
+                <div class="details-subcontainer">
+                    <span class="details-text">History:</span>
+                    <span class="details-value">
+                        <a href="#" class="author-link history-trigger-link" onclick="event.stopPropagation()">${historyData.length} older version(s)</a>
+                    </span>
+                </div>`;
+            } else {
+                historyHtml = `
+                <div class="details-subcontainer">
+                    <span class="details-text">History:</span>
+                    <span class="details-value" style="color: var(--secondary-text-color); font-weight: 400;">No history</span>
+                </div>`;
+            }
+
+            let avatarHtml = '';
+            if (showAvatar) {
+                avatarHtml = `
+                <div class="author-avatar-link" title="View icons by ${authorName}" role="button">
+                    <img src="${authorProfile}" alt="${authorName}" class="author-avatar" onerror="this.src='https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/ico/folder11.ico'">
+                </div>`;
+            }
+
+            iconItem.innerHTML = `
+                ${avatarHtml}
+                <button class="open-btn" title="Open icon in new tab" aria-label="Open icon in new tab">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M10.0002 5H8.2002C7.08009 5 6.51962 5 6.0918 5.21799C5.71547 5.40973 5.40973 5.71547 5.21799 6.0918C5 6.51962 5 7.08009 5 8.2002V15.8002C5 16.9203 5 17.4801 5.21799 17.9079C5.40973 18.2842 5.71547 18.5905 6.0918 18.7822C6.5192 19 7.07899 19 8.19691 19H15.8031C16.921 19 17.48 19 17.9074 18.7822C18.2837 18.5905 18.5905 18.2839 18.7822 17.9076C19 17.4802 19 16.921 19 15.8031V14M20 9V4M20 4H15M20 4L13 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <button class="download-btn" title="Download icon" aria-label="Download icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><path d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <div class="icon-image-container">
+                    <canvas width="96" height="96"></canvas>
+                    ${icon.small_svg_url && icon.small_svg_url !== "" ? `<canvas width="44" height="44" class="small-image"></canvas>` : ''}
+                </div>
+                <p class="icon-name" title="${formattedName}">${formattedName}</p>
+                <div class="details">
+                    <div class="details-subcontainer">
+                        <span class="details-text">Size:</span>
+                        <span class="details-value">${(parseInt(icon.size) / (1024 * 1024)).toFixed(2)} MB</span>
+                    </div>
+                    <div class="details-subcontainer">
+                        <span class="details-text">Date:</span>
+                        <span class="details-value">${new Date(icon.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="details-subcontainer">
+                        <span class="details-text">Author:</span>
+                        <span class="details-value">
+                            <a href="${authorLink}" target="_blank" class="author-link" onclick="event.stopPropagation()">${authorName}</a>
+                        </span>
+                    </div>
+                    ${historyHtml}
+                </div>
+            `;
+
+            const mainCanvas = iconItem.querySelector('canvas');
+            const mainCtx = mainCanvas.getContext('2d');
+            const mainImg = new Image();
+            mainImg.crossOrigin = "Anonymous"; 
+            mainImg.onload = () => { mainCtx.drawImage(mainImg, 0, 0, 96, 96); };
+            mainImg.src = icon.url_icon;
+
+            if (icon.small_svg_url) {
+                const smallCanvas = iconItem.querySelector('.small-image');
+                const smallCtx = smallCanvas.getContext('2d');
+                const smallImg = new Image();
+                smallImg.crossOrigin = "Anonymous";
+                smallImg.onload = () => { smallCtx.drawImage(smallImg, 0, 0, 44, 44); };
+                smallImg.src = icon.small_svg_url;
+            }
+
+            if (showAvatar) {
+                const avatarBtn = iconItem.querySelector('.author-avatar-link');
+                if (avatarBtn) {
+                    avatarBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openAuthorDialog(authorName, authorLink, authorProfile);
+                    });
+                }
+            }
+
+            const historyLinkBtn = iconItem.querySelector('.history-trigger-link');
+            if(historyLinkBtn) {
+                historyLinkBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openHistoryDialog(icon.name, historyData);
+                });
+            }
+
+            const dlBtn = iconItem.querySelector('.download-btn');
+            if (dlBtn) {
+                dlBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    if (dlBtn.disabled) return;
+                    dlBtn.disabled = true;
+                    dlBtn.classList.add('disabled');
+                    const originalHTML = dlBtn.innerHTML;
+                    const success = await downloadIcon(icon.url_icon, icon.name);
+                    if (success) {
+                        dlBtn.classList.add('downloaded');
+                        dlBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                        setTimeout(() => {
+                            dlBtn.classList.remove('downloaded');
+                            dlBtn.innerHTML = originalHTML;
+                            dlBtn.disabled = false;
+                            dlBtn.classList.remove('disabled');
+                        }, 2000);
+                    } else {
+                        setTimeout(() => { dlBtn.disabled = false; dlBtn.classList.remove('disabled'); }, 1200);
+                    }
+                });
+            }
+
+            const openBtn = iconItem.querySelector('.open-btn');
+            if (openBtn) {
+                openBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openIcon(icon.url_icon);
+                });
+            }
+
+            iconItem.addEventListener('click', () => showDetails(iconItem));
+
+            return iconItem;
+        }
+
+        function displayIcons(filteredIcons = iconsCache.filter(i => !i.is_history), replaceContent = false) {
+            const container = document.getElementById('icons-container');
+            if (replaceContent) container.innerHTML = '';
+            
+            displaySkeletons(6, container);
+            const start = currentPage * iconsPerPage;
+            const end = start + iconsPerPage;
+            const iconsToShow = filteredIcons.slice(start, end);
+            
+            setTimeout(() => {
+                iconsToShow.forEach(icon => {
+                    container.appendChild(createIconElement(icon, true));
+                });
+                clearSkeletons(container);
             }, 500);
         }
 
         function showDetails(iconItem) {
-            const detailsElement = iconItem.querySelector('.details');
-
-            if (currentDetailsElement === detailsElement) {
-                detailsElement.style.display = 'none';
+            if (currentExpandedCard === iconItem) {
                 iconItem.classList.remove('selected');
-                currentDetailsElement = null;
+                currentExpandedCard = null;
                 return;
             }
 
-            if (currentDetailsElement) {
-                const prevItem = currentDetailsElement.closest('.icon-item');
-                if (prevItem) prevItem.classList.remove('selected');
-                currentDetailsElement.style.display = 'none';
+            if (currentExpandedCard) {
+                currentExpandedCard.classList.remove('selected');
             }
 
-            detailsElement.style.display = 'block';
             iconItem.classList.add('selected');
-            currentDetailsElement = detailsElement;
+            currentExpandedCard = iconItem;
         }
 
-        function displaySkeletons(count) {
-            const container = document.getElementById('icons-container');
+        function displaySkeletons(count, container) {
             for (let i = 0; i < count; i++) {
                 const skeletonItem = document.createElement('div');
                 skeletonItem.classList.add('skeleton-item');
@@ -662,8 +997,8 @@
             }
         }
 
-        function clearSkeletons() {
-            const skeletons = document.querySelectorAll('.skeleton-item');
+        function clearSkeletons(container) {
+            const skeletons = container.querySelectorAll('.skeleton-item');
             skeletons.forEach(skeleton => skeleton.remove());
         }
 
@@ -671,18 +1006,11 @@
             return name.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
         }
 
-        function openIcon(url) {
-            window.open(url, '_blank');
-        }
+        function openIcon(url) { window.open(url, '_blank'); }
 
         function getExtensionFromUrl(url) {
-            try {
-                const pathname = new URL(url).pathname;
-                const match = pathname.match(/\.[a-zA-Z0-9]+$/);
-                return match ? match[0] : '';
-            } catch (e) {
-                return '';
-            }
+            try { return new URL(url).pathname.match(/\.[a-zA-Z0-9]+$/)?.[0] || ''; } 
+            catch (e) { return ''; }
         }
 
         async function downloadIcon(url, name) {
@@ -703,11 +1031,7 @@
                 return true;
             } catch (error) {
                 console.error('Download failed, opening in new tab instead:', error);
-                try {
-                    window.open(url, '_blank');
-                } catch (e) {
-                    console.error('Fallback open failed', e);
-                }
+                try { window.open(url, '_blank'); } catch (e) { console.error('Fallback open failed', e); }
                 return false;
             }
         }
@@ -715,10 +1039,7 @@
         window.addEventListener('scroll', () => {
             const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
             if (scrollTop + clientHeight >= scrollHeight - 48) {
-                let filteredIcons = iconsCache.filter(icon =>
-                    formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase())
-                );
-
+                let filteredIcons = iconsCache.filter(icon => !icon.is_history && formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase()));
                 filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
                 if ((currentPage + 1) * iconsPerPage < filteredIcons.length) {
                     currentPage++;
@@ -729,7 +1050,7 @@
 
         function updatePageTitleAndMeta(totalIcons) {
             const searchBar = document.getElementById('search-bar');
-            searchBar.placeholder = `Search ${totalIcons} icons`;
+            searchBar.placeholder = `Search ${formatIconCount(totalIcons)} icons...`;
             document.title = `Over ${formatIconCount(totalIcons)} icons Folder11 for Windows`;
         }
 
