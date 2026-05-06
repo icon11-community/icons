@@ -21,6 +21,7 @@
             
             /* Overlay Blur Variables */
             --overlay-bg: rgba(255, 255, 255, 0.7);
+            --header-blur-bg: rgba(250, 249, 248, 0.85);
             
             /* Dialog Variables */
             --dialog-bg: #ffffff;
@@ -65,6 +66,7 @@
                 --control-border-color: rgba(255, 255, 255, 0.1);
                 
                 --overlay-bg: rgba(32, 32, 32, 0.75);
+                --header-blur-bg: rgba(32, 32, 32, 0.85);
                 
                 --dialog-bg: #2c2c2c;
                 --dialog-footer-bg: #202020;
@@ -98,123 +100,108 @@
             margin: 0;
             padding: 0;
             transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
 
-        h1, .fluent-dialog-title, .icon-name {
+        h1, h2, h3, .fluent-dialog-title, .icon-name {
             font-family: 'Segoe UI Variable Display', 'Segoe UI', Tahoma, Geneva, sans-serif;
         }
 
-        /* --- FLUENT DIALOG STYLES (GLOBAL) --- */
-        .dialog-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.4);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 9999; opacity: 0; visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            backdrop-filter: blur(2px);
+        /* --- APP LAYOUT (SIDEBAR + MAIN CONTENT) --- */
+        .app-container { display: flex; min-height: 100vh; }
+
+        /* --- SIDEBAR STYLES --- */
+        .sidebar {
+            width: 260px; flex-shrink: 0; border-right: 1px solid var(--card-border-color);
+            height: 100vh; position: sticky; top: 0; display: flex; flex-direction: column;
+            background-color: var(--bg-color); z-index: 200;
         }
 
-        .dialog-overlay.show { opacity: 1; visibility: visible; }
+        .sidebar-header { padding: 24px 20px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid transparent; }
+        .sidebar-title { font-weight: 600; font-size: 16px; margin: 0; color: var(--text-color); }
 
-        .fluent-dialog {
-            background-color: var(--dialog-bg); border: 1px solid var(--dialog-border);
-            border-radius: 8px; width: 90%; max-width: 480px; box-shadow: var(--shadow-dialog);
-            overflow: hidden; transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
-            display: flex; flex-direction: column;
+        .github-logo-btn {
+            text-decoration: none; color: var(--text-color); display: flex; align-items: center; justify-content: center;
+            background-color: var(--control-bg-color); border: 1px solid var(--control-border-color);
+            border-radius: 8px; width: 36px; height: 36px; box-shadow: var(--shadow-subtle); transition: background-color 0.2s ease; flex-shrink: 0;
         }
+        .github-logo-btn:hover { background-color: var(--hover-color); }
+        .github-logo-btn:active { background-color: var(--active-color); transform: scale(0.96); }
 
-        .dialog-overlay.show .fluent-dialog { transform: scale(1); }
+        .sidebar-menu { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
 
-        .fluent-dialog-content { padding: 24px; }
-        .fluent-dialog-title { margin: 0 0 12px 0; font-size: 20px; font-weight: 600; }
-        .fluent-dialog-body { margin: 0 0 20px 0; font-size: 14px; line-height: 1.5; color: var(--text-color); }
+        /* Custom Scrollbar for Sidebar */
+        .sidebar-menu::-webkit-scrollbar { width: 4px; }
+        .sidebar-menu::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-menu::-webkit-scrollbar-thumb { background-color: transparent; border-radius: 4px; }
+        .sidebar-menu:hover::-webkit-scrollbar-thumb { background-color: var(--control-border-color); }
+        .sidebar-menu::-webkit-scrollbar-thumb:hover { background-color: var(--secondary-text-color); }
 
-        .fluent-dialog-footer {
-            background-color: var(--dialog-footer-bg); padding: 24px;
-            display: flex; justify-content: flex-end; gap: 8px;
-            border-top: 1px solid var(--dialog-border);
+        /* Fluent Nav Item Style (Base) */
+        .sidebar-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 12px; border-radius: 6px; cursor: pointer;
+            transition: background-color 0.15s ease; position: relative; color: var(--text-color);
         }
-
-        .fluent-btn {
-            padding: 6px 20px; border-radius: 4px; font-size: 14px; font-weight: 500;
-            cursor: pointer; transition: background-color 0.15s ease, transform 0.1s ease;
-            font-family: inherit; display: inline-flex; align-items: center; justify-content: center;
-        }
+        .sidebar-item:hover { background-color: var(--hover-color); }
+        .sidebar-item:active { background-color: var(--active-color); }
         
-        .fluent-btn:active { transform: scale(0.96); }
-        .fluent-btn-primary { background-color: var(--accent-color); color: var(--accent-text-color); border: 1px solid transparent; }
-        .fluent-btn-primary:hover { background-color: var(--accent-hover); }
-        .fluent-btn-secondary { background-color: var(--control-bg-color); color: var(--text-color); border: 1px solid var(--control-border-color); }
-        .fluent-btn-secondary:hover { background-color: var(--hover-color); }
-        .fluent-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-        .badge-container { display: flex; justify-content: center; margin-top: 16px; }
-        .store-badge-link { display: inline-block; transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); }
-        .store-badge-link:hover { transform: scale(1.05); }
-        .store-badge-link:active { transform: scale(0.96); }
-
-        /* --- AUTHOR DIALOG & SCROLL --- */
-        .fluent-dialog.wide-dialog { max-width: 840px; width: 95%; }
-
-        .author-dialog-header {
-            display: flex; align-items: center; gap: 16px; margin-bottom: 0px; padding-bottom: 0px;
+        /* Active State with Blue Pill */
+        .sidebar-item.active { background-color: var(--hover-color); font-weight: 600; }
+        .sidebar-item.active::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 3px; height: 16px; background-color: var(--accent-color); border-radius: 4px;
         }
 
-        .author-dialog-avatar-large {
-            width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
-            border: 1px solid var(--control-border-color); transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .author-dialog-avatar-large:hover { transform: scale(1.05); box-shadow: var(--shadow-subtle); }
-
-        /* TAB STYLING FLUENT UI */
-        .fluent-tabs {
-            display: flex; gap: 24px; margin-top: 20px; margin-bottom: 16px;
-            border-bottom: 1px solid var(--dialog-border); padding: 0 8px;
-        }
-        .fluent-tab {
-            background: transparent; border: none; color: var(--secondary-text-color);
-            font-size: 14px; font-weight: 600; padding: 8px 4px; cursor: pointer;
-            position: relative; transition: color 0.2s ease; font-family: inherit;
-        }
-        .fluent-tab:hover { color: var(--text-color); }
-        .fluent-tab.active { color: var(--text-color); }
-        .fluent-tab.active::after {
-            content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
-            height: 3px; background-color: var(--accent-color); border-radius: 3px 3px 0 0;
+        .sidebar-item-text { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 8px; flex: 1; }
+        .sidebar-badge {
+            background: var(--control-bg-color); border: 1px solid var(--control-border-color);
+            border-radius: 12px; padding: 2px 8px; font-size: 11px; font-weight: 600; color: var(--secondary-text-color);
         }
 
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; animation: fadeInTab 0.3s ease; }
-
-        @keyframes fadeInTab { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-        .scrollable-body { max-height: 55vh; overflow-y: auto; padding-right: 8px; margin-right: -8px; margin-bottom: 0; }
-        .scrollable-body::-webkit-scrollbar { width: 6px; }
-        .scrollable-body::-webkit-scrollbar-track { background: transparent; }
-        .scrollable-body::-webkit-scrollbar-thumb { background-color: var(--control-border-color); border-radius: 6px; }
-        .scrollable-body::-webkit-scrollbar-thumb:hover { background-color: var(--secondary-text-color); }
-
-        /* --- HEADER & MAIN --- */
-        header { text-align: center; padding: 20px 15px; position: relative; }
-        h1 { font-weight: 600; margin-bottom: 24px; }
-
-        #github-logo {
-            position: absolute; top: 20px; right: 20px; text-decoration: none; color: var(--text-color);
-            display: flex; align-items: center; justify-content: center; background-color: var(--control-bg-color);
-            border: 1px solid var(--control-border-color); border-radius: 8px; width: 40px; height: 40px;
-            box-shadow: var(--shadow-subtle); transition: background-color 0.2s ease;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        /* --- ACCORDION / FOLDER SECTION STYLES --- */
+        .sidebar-section { margin-top: 8px; }
+        .sidebar-section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 12px; border-radius: 6px; cursor: pointer; user-select: none;
+            color: var(--text-color); transition: background-color 0.15s ease;
         }
-        #github-logo:hover { background-color: var(--hover-color); }
-        #github-logo:active { background-color: var(--active-color); transform: scale(0.96); }
+        .sidebar-section-header:hover { background-color: var(--hover-color); }
+        
+        .sidebar-section-header-left { display: flex; align-items: center; gap: 10px; }
+        .sidebar-label { font-size: 14px; font-weight: 600; margin: 0; padding: 0; }
+        
+        /* Arrow Chevron Styles */
+        .section-arrow { transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); color: var(--secondary-text-color); }
+        /* Default: menghadap bawah. Jika OPEN: menghadap atas ^ */
+        .section-arrow { transform: rotate(0deg); } 
+        .section-arrow.open { transform: rotate(180deg); }
 
-        /* --- SEARCH & CUSTOM COMBOBOX --- */
+        .sidebar-section-content {
+            display: flex; flex-direction: column; gap: 2px;
+            padding-left: 20px; /* Indentasi ke dalam pengganti garis konektor */
+            margin-top: 2px;
+            overflow: hidden;
+        }
+        .sidebar-section-content.collapsed { display: none; }
+
+        /* --- MAIN CONTENT & STICKY HEADER --- */
+        .main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+        .sticky-header {
+            position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px; background-color: var(--header-blur-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border-color); gap: 16px;
+        }
+
+        .header-left-controls { display: flex; align-items: center; gap: 12px; flex: 1; max-width: 600px; }
+
+        /* --- SEARCH & COMBOBOX --- */
         #search-container {
-            display: flex; align-items: center; width: 100%; max-width: 480px; margin: 0 auto;
+            display: flex; align-items: center; width: 100%;
             background-color: var(--control-bg-color); border: 1px solid var(--control-border-color);
             border-bottom: 1px solid var(--control-border-color); border-radius: 4px; box-shadow: var(--shadow-subtle);
             position: relative; transition: border-bottom-color 0.2s ease;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 50;
         }
 
         #search-container.focus-within { border-bottom: 2px solid var(--accent-color); padding-bottom: -1px; }
@@ -237,26 +224,86 @@
         .custom-option.selected { background-color: var(--hover-color); }
         .custom-option.selected::before { content: ''; position: absolute; left: 4px; top: 50%; transform: translateY(-50%); height: 16px; width: 3px; background-color: var(--accent-color); border-radius: 4px; }
 
-        /* --- ICONS GRID (DIGUNAKAN UNTUK MAIN & HISTORY) --- */
-        main { padding: 20px; }
-        .icon-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin: 20px auto; max-width: 1200px; }
+        .icon-maker-button { 
+            background-color: var(--accent-color); border: 1px solid transparent; color: var(--accent-text-color); 
+            border-radius: 4px; padding: 8px 16px; font-size: 14px; font-weight: 500; text-decoration: none; 
+            display: flex; align-items: center; justify-content: center; transition: background-color 0.15s ease; 
+            flex-shrink: 0;
+        }
+        .icon-maker-button:hover { background-color: var(--accent-hover); }
+        .icon-maker-button:active { transform: scale(0.98); }
+
+
+        /* --- FLUENT DIALOG STYLES (GLOBAL) --- */
+        .dialog-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center;
+            z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease;
+            backdrop-filter: blur(2px);
+        }
+        .dialog-overlay.show { opacity: 1; visibility: visible; }
+        .fluent-dialog {
+            background-color: var(--dialog-bg); border: 1px solid var(--dialog-border);
+            border-radius: 8px; width: 90%; max-width: 480px; box-shadow: var(--shadow-dialog);
+            overflow: hidden; transform: scale(0.95); transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+            display: flex; flex-direction: column;
+        }
+        .dialog-overlay.show .fluent-dialog { transform: scale(1); }
+        .fluent-dialog-content { padding: 24px; }
+        .fluent-dialog-title { margin: 0 0 12px 0; font-size: 20px; font-weight: 600; }
+        .fluent-dialog-body { margin: 0 0 20px 0; font-size: 14px; line-height: 1.5; color: var(--text-color); }
+        .fluent-dialog-footer { background-color: var(--dialog-footer-bg); padding: 24px; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--dialog-border); }
+
+        .fluent-btn {
+            padding: 6px 20px; border-radius: 4px; font-size: 14px; font-weight: 500;
+            cursor: pointer; transition: background-color 0.15s ease, transform 0.1s ease;
+            font-family: inherit; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .fluent-btn:active { transform: scale(0.96); }
+        .fluent-btn-primary { background-color: var(--accent-color); color: var(--accent-text-color); border: 1px solid transparent; }
+        .fluent-btn-primary:hover { background-color: var(--accent-hover); }
+        .fluent-btn-secondary { background-color: var(--control-bg-color); color: var(--text-color); border: 1px solid var(--control-border-color); }
+        .fluent-btn-secondary:hover { background-color: var(--hover-color); }
+        .fluent-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .badge-container { display: flex; justify-content: center; margin-top: 16px; }
+        .store-badge-link { display: inline-block; transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); }
+        .store-badge-link:hover { transform: scale(1.05); }
+
+        /* --- AUTHOR DIALOG & TABS --- */
+        .fluent-dialog.wide-dialog { max-width: 840px; width: 95%; }
+        .author-dialog-header { display: flex; align-items: center; gap: 16px; margin-bottom: 0px; padding-bottom: 0px; }
+        .author-dialog-avatar-large { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 1px solid var(--control-border-color); }
+        
+        .fluent-tabs { display: flex; gap: 24px; margin-top: 20px; margin-bottom: 16px; border-bottom: 1px solid var(--dialog-border); padding: 0 8px; }
+        .fluent-tab { background: transparent; border: none; color: var(--secondary-text-color); font-size: 14px; font-weight: 600; padding: 8px 4px; cursor: pointer; position: relative; transition: color 0.2s ease; font-family: inherit; }
+        .fluent-tab:hover, .fluent-tab.active { color: var(--text-color); }
+        .fluent-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background-color: var(--accent-color); border-radius: 3px 3px 0 0; }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; animation: fadeInTab 0.3s ease; }
+        @keyframes fadeInTab { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        .scrollable-body { max-height: 55vh; overflow-y: auto; padding-right: 8px; margin-right: -8px; margin-bottom: 0; }
+        .scrollable-body::-webkit-scrollbar { width: 6px; }
+        .scrollable-body::-webkit-scrollbar-track { background: transparent; }
+        .scrollable-body::-webkit-scrollbar-thumb { background-color: var(--control-border-color); border-radius: 6px; }
+
+        .author-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin: 0; }
+
+        /* --- ICONS GRID --- */
+        main { padding: 24px; }
+        .icon-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; max-width: 1400px; margin: 0 auto; }
 
         .icon-item {
             background-color: var(--card-bg-color); padding: 24px 16px 16px 16px; border: 1px solid var(--card-border-color);
             border-radius: 8px; text-align: center; box-shadow: var(--shadow-subtle); position: relative;
             opacity: 0; animation: fadeIn 0.4s forwards ease; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            transition: transform 0.2s ease, background-color 0.2s ease; overflow: hidden; 
-            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease; overflow: hidden; cursor: pointer;
         }
-
         .icon-item:hover { background-color: var(--hover-color); }
 
-        .author-avatar-link {
-            position: absolute; top: 10px; left: 10px; width: 24px !important; height: 24px !important; z-index: 10; display: inline-block; border-radius: 50%; cursor: pointer;
-        }
-        .author-avatar {
-            width: 24px !important; height: 24px !important; border-radius: 50% !important; object-fit: cover !important; border: 1px solid var(--control-border-color); background-color: var(--control-bg-color); transition: box-shadow 0.2s ease, opacity 0.2s ease;
-        }
+        .author-avatar-link { position: absolute; top: 10px; left: 10px; width: 24px !important; height: 24px !important; z-index: 10; display: inline-block; border-radius: 50%; cursor: pointer; }
+        .author-avatar { width: 24px !important; height: 24px !important; border-radius: 50% !important; object-fit: cover !important; border: 1px solid var(--control-border-color); background-color: var(--control-bg-color); }
         .author-avatar-link:hover .author-avatar { box-shadow: var(--shadow-subtle); opacity: 0.9; }
         
         .download-btn, .open-btn { 
@@ -265,21 +312,15 @@
         .download-btn svg, .open-btn svg { width: 12px; height: 12px; display: block; color: currentColor; }
         .download-btn { right: 10px; }
         .open-btn { right: 36px; } 
-
         .icon-item:hover .download-btn, .icon-item:hover .open-btn, .icon-item.selected .download-btn, .icon-item.selected .open-btn { opacity: 1; pointer-events: auto; }
         .download-btn:hover, .open-btn:hover { background-color: var(--hover-color); }
-        .download-btn:active, .open-btn:active { background-color: var(--active-color); transform: scale(0.96); }
         .download-btn.downloaded { background-color: #107c41; border-color: #107c41; color: #ffffff; }
-        .download-btn.disabled { opacity: 0.5; pointer-events: none; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .icon-image-container canvas { margin: auto; border-radius: 8px; }
 
-        p.icon-name {
-            font-size: 14px; color: var(--text-color); margin: 12px 0 4px; font-weight: 600; cursor: default;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block;
-        }
+        p.icon-name { font-size: 14px; color: var(--text-color); margin: 12px 0 4px; font-weight: 600; cursor: default; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
 
         /* OVERLAY BLUR */
         .icon-item .details { 
@@ -288,16 +329,12 @@
             z-index: 30; padding: 20px; border-radius: 8px; display: flex; flex-direction: column; 
             justify-content: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; 
         }
-        
         .icon-item.selected .details { opacity: 1; pointer-events: auto; }
         
         .details-text { color: var(--secondary-text-color); font-size: 12px; flex: 0 1 auto; margin-right: 3px; }
         .details-subcontainer { display: flex; align-items: center; width: 100%; font-size: 12px; line-height: 1.4; color: var(--text-color); }
         .details-value { display: flex; align-items: center; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
-        .details-value::before {
-            content: '..................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................';
-            color: var(--secondary-text-color); opacity: 0.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 3px; flex-shrink: 1;
-        }
+        .details-value::before { content: '.........................................................................................................................................................................................................................'; color: var(--secondary-text-color); opacity: 0.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 3px; flex-shrink: 1; }
         
         .author-link { color: var(--accent-color); text-decoration: none; transition: color 0.15s ease; cursor: pointer;}
         .author-link:hover { text-decoration: underline; color: var(--accent-hover); }
@@ -311,23 +348,118 @@
 
         #scroll-to-top-btn { position: fixed; bottom: 24px; right: 24px; background-color: var(--control-bg-color); border: 1px solid var(--control-border-color); color: var(--text-color); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.2s ease, background-color 0.2s ease; z-index: 1000; box-shadow: var(--shadow-subtle); backdrop-filter: blur(10px); }
         #scroll-to-top-btn:hover { background-color: var(--hover-color); }
-        #scroll-to-top-btn:active { transform: scale(0.95); }
         #scroll-to-top-btn.show { opacity: 1; }
 
         .icon-image-container { position: relative; display: inline-block; transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); }
         .icon-item:hover .icon-image-container, .icon-item.selected .icon-image-container { transform: translateY(-4px); }
-        .icon-item.selected { background-color: var(--selection-bg); border-color: var(--selection-border); }
-        .icon-item.selected .icon-image-container { transform: translateY(-4px); }
         .icon-image-container .small-image { position: absolute; bottom: 0px; right: 0px; width: 44px; height: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-
-        .icon-maker-button { background-color: var(--accent-color); border: 1px solid transparent; color: var(--accent-text-color); border-radius: 4px; padding: 6px 16px; font-size: 14px; font-weight: 500; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: background-color 0.15s ease; position: absolute; top: 20px; right: 76px; }
-        .icon-maker-button:hover { background-color: var(--accent-hover); }
-        .icon-maker-button:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
 
-    <!-- Fluent Dialog Promo -->
+    <!-- APP WRAPPER FOR SIDEBAR LAYOUT -->
+    <div class="app-container">
+        
+        <!-- SIDEBAR DENGAN ACCORDION -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="https://github.com/icon11-community" target="_blank" class="github-logo-btn" title="Visit our GitHub">
+                    <svg height="20" aria-hidden="true" viewBox="0 0 24 24" version="1.1" width="20" class="octicon octicon-mark-github" fill="currentColor">
+                        <path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path>
+                    </svg>
+                </a>
+                <h1 class="sidebar-title">Folder11</h1>
+            </div>
+            
+            <div class="sidebar-menu" id="sidebar-menu">
+                <!-- Root Item: All Icons -->
+                <div class="sidebar-item active" id="btn-all-icons" onclick="selectSidebarAuthor('', this)">
+                    <span class="sidebar-item-text">All Icons</span>
+                </div>
+
+                <!-- Accordion 1: Authors -->
+                <div class="sidebar-section">
+                    <div class="sidebar-section-header" onclick="toggleSidebarSection('authors-content', this)">
+                        <div class="sidebar-section-header-left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span class="sidebar-label">Authors</span>
+                        </div>
+                        <svg class="section-arrow open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <!-- Tempat JS menginjeksi list author -->
+                    <div class="sidebar-section-content" id="authors-content"></div>
+                </div>
+
+                <!-- Accordion 2: Categories (Placeholder) -->
+                <div class="sidebar-section">
+                    <div class="sidebar-section-header" onclick="toggleSidebarSection('categories-content', this)">
+                        <div class="sidebar-section-header-left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            <span class="sidebar-label">Categories</span>
+                        </div>
+                        <svg class="section-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="sidebar-section-content collapsed" id="categories-content">
+                        <div class="sidebar-item" style="opacity: 0.5; cursor: default;">
+                            <span class="sidebar-item-text">Coming soon...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            
+            <!-- STICKY HEADER -->
+            <header class="sticky-header">
+                <div class="header-left-controls">
+                    <div id="search-container">
+                        <input type="text" id="search-bar" placeholder="Search icons...">
+                        <div class="custom-select-wrapper" id="custom-sort">
+                            <div class="custom-select-trigger">
+                                <span class="custom-select-text">Sort</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="custom-options">
+                                <div class="custom-option selected" data-value="sort">Sort</div>
+                                <div class="custom-option" data-value="a-z">A-Z</div>
+                                <div class="custom-option" data-value="z-a">Z-A</div>
+                                <div class="custom-option" data-value="date-newest">Newest</div>
+                                <div class="custom-option" data-value="date-oldest">Oldest</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="icon-maker.html" id="icon-maker-link" class="icon-maker-button">Icon Maker</a>
+            </header>
+
+            <main>
+                <div id="icons-container" class="icon-list"></div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Floating Button To Top -->
+    <button id="scroll-to-top-btn" title="Scroll to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <!-- Dialogs -->
     <div id="promo-dialog-overlay" class="dialog-overlay">
         <div class="fluent-dialog">
             <div class="fluent-dialog-content">
@@ -345,7 +477,7 @@
         </div>
     </div>
 
-    <!-- Fluent Dialog Author Profile with Tabs -->
+    <!-- Fluent Dialog Author Profile -->
     <div id="author-dialog-overlay" class="dialog-overlay">
         <div class="fluent-dialog wide-dialog">
             <div class="fluent-dialog-content" style="padding-bottom: 0;">
@@ -358,20 +490,14 @@
                         <p id="author-dialog-count" style="margin: 0; font-size: 13px; color: var(--secondary-text-color);"></p>
                     </div>
                 </div>
-                
-                <!-- Fluent Tabs -->
                 <div class="fluent-tabs" id="author-tabs">
                     <button class="fluent-tab active" data-tab="current">Current Icons</button>
                     <button class="fluent-tab" data-tab="history">History / Older Versions</button>
                 </div>
-                
-                <!-- Scroll Area for Tab Panes -->
                 <div class="fluent-dialog-body scrollable-body" id="dialog-scroll-area">
-                    <!-- Pane 1: Current -->
                     <div id="author-tab-current" class="tab-pane active">
                         <div id="author-icons-container" class="icon-list author-grid"></div>
                     </div>
-                    <!-- Pane 2: History (Sekarang menggunakan icon-list agar berbentuk Grid) -->
                     <div id="author-tab-history" class="tab-pane">
                         <div id="author-history-container" class="icon-list author-grid"></div>
                     </div>
@@ -383,13 +509,12 @@
         </div>
     </div>
 
-    <!-- Fluent Dialog History (GRID VIEW FOR SPECIFIC ICON) -->
+    <!-- Fluent Dialog History -->
     <div id="history-dialog-overlay" class="dialog-overlay">
         <div class="fluent-dialog wide-dialog">
             <div class="fluent-dialog-content">
                 <h2 id="history-dialog-title" class="fluent-dialog-title">Icon History</h2>
                 <div class="fluent-dialog-body scrollable-body">
-                    <!-- Menggunakan class icon-list untuk membuat tampilan grid otomatis -->
                     <div id="history-list-container" class="icon-list author-grid"></div>
                 </div>
             </div>
@@ -399,45 +524,6 @@
         </div>
     </div>
 
-    <header>
-        <a href="https://github.com/icon11-community" target="_blank" id="github-logo" title="Visit our GitHub">
-            <svg height="24" aria-hidden="true" viewBox="0 0 24 24" version="1.1" width="24" class="octicon octicon-mark-github" fill="currentColor">
-                <path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path>
-            </svg>
-        </a>
-        <h1>Folder11 Community</h1>
-        
-        <div id="search-container">
-            <input type="text" id="search-bar" placeholder="Search icons...">
-            <div class="custom-select-wrapper" id="custom-sort">
-                <div class="custom-select-trigger">
-                    <span class="custom-select-text">Sort</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </div>
-                <div class="custom-options">
-                    <div class="custom-option selected" data-value="sort">Sort</div>
-                    <div class="custom-option" data-value="a-z">A-Z</div>
-                    <div class="custom-option" data-value="z-a">Z-A</div>
-                    <div class="custom-option" data-value="date-newest">Newest</div>
-                    <div class="custom-option" data-value="date-oldest">Oldest</div>
-                </div>
-            </div>
-        </div>
-
-        <a href="icon-maker.html" id="icon-maker-link" class="icon-maker-button">Icon Maker</a>
-        <button id="scroll-to-top-btn" title="Scroll to Top">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 19V5M5 12l7-7 7 7"/>
-            </svg>
-        </button>
-    </header>
-
-    <main>
-        <div id="icons-container" class="icon-list"></div>
-    </main>
-    
     <script>
         const jsonURL = 'https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/Folder11.json';
         let iconsCache = [];
@@ -445,13 +531,12 @@
         const iconsPerPage = 48;
         let currentSortOption = 'sort';
         let currentSearchTerm = '';
+        let currentAuthorFilter = ''; 
 
-        /* DIALOG INFINITE SCROLL VARIABLES */
         let dialogIconsCache = [];
         let dialogCurrentPage = 0;
         const dialogIconsPerPage = 48;
 
-        /* TAB LOGIC STATE */
         let currentActiveAuthor = '';
         let currentExpandedCard = null;
 
@@ -463,8 +548,64 @@
             };
         }
 
-        /* --- NEW: REUSABLE GRID ITEM BUILDER FOR HISTORY --- */
-        /* Menggunakan style grid card yang persis sama dengan halaman depan */
+        /* --- FUNGSI ACCORDION SIDEBAR --- */
+        function toggleSidebarSection(contentId, headerElement) {
+            const content = document.getElementById(contentId);
+            const arrow = headerElement.querySelector('.section-arrow');
+            
+            if (content.classList.contains('collapsed')) {
+                // Buka
+                content.classList.remove('collapsed');
+                arrow.classList.add('open');
+            } else {
+                // Tutup
+                content.classList.add('collapsed');
+                arrow.classList.remove('open');
+            }
+        }
+
+        /* --- MENAMPILKAN AUTHOR DI DALAM ACCORDION --- */
+        function populateSidebar() {
+            const authorsContent = document.getElementById('authors-content');
+            authorsContent.innerHTML = '';
+            
+            document.getElementById('btn-all-icons').classList.add('active');
+
+            const authorCounts = {};
+            iconsCache.forEach(icon => {
+                if (!icon.is_history) {
+                    const author = icon.author_name || 'Community';
+                    authorCounts[author] = (authorCounts[author] || 0) + 1;
+                }
+            });
+
+            const sortedAuthors = Object.keys(authorCounts).sort((a, b) => authorCounts[b] - authorCounts[a]);
+
+            sortedAuthors.forEach(author => {
+                const item = document.createElement('div');
+                item.className = 'sidebar-item';
+                item.innerHTML = `
+                    <span class="sidebar-item-text" title="${author}">${author}</span>
+                    <span class="sidebar-badge">${authorCounts[author]}</span>
+                `;
+                item.onclick = () => selectSidebarAuthor(author, item);
+                authorsContent.appendChild(item);
+            });
+        }
+
+        /* --- FUNGSI KLIK PADA ITEM SIDEBAR --- */
+        function selectSidebarAuthor(author, element) {
+            currentAuthorFilter = author;
+            
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            
+            filterIcons(currentSearchTerm);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+
+        /* --- REUSABLE GRID ITEM BUILDER FOR HISTORY --- */
         function createHistoryItemElement(hIcon, fallbackAuthorName, fallbackAuthorProfile) {
             const iconItem = document.createElement('div');
             iconItem.classList.add('icon-item');
@@ -551,9 +692,7 @@
                 }
             });
 
-            // Klik item membuka details (blur overlay)
             iconItem.addEventListener('click', () => showDetails(iconItem));
-
             return iconItem;
         }
 
@@ -584,7 +723,6 @@
                 }
             });
 
-            // TAB SWITCHING LOGIC
             const tabs = document.querySelectorAll('#author-tabs .fluent-tab');
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -607,7 +745,6 @@
                 }
             });
 
-            // Infinite Scroll for Author Current Icons Tab
             document.getElementById('dialog-scroll-area').addEventListener('scroll', function() {
                 const currentTabActive = document.querySelector('#author-tabs .fluent-tab[data-tab="current"]').classList.contains('active');
                 if (currentTabActive) {
@@ -648,10 +785,9 @@
             }
         }
 
-        /* --- HISTORY DIALOG FUNCTION (Specific Icon - Now as a Grid) --- */
+        /* --- HISTORY DIALOG FUNCTION --- */
         function openHistoryDialog(iconName, historyData) {
             const dialog = document.getElementById('history-dialog-overlay');
-            // Menjadikan dialog menjadi lebar untuk menampung grid
             dialog.querySelector('.fluent-dialog').classList.add('wide-dialog'); 
             
             const formattedName = formatIconName(iconName);
@@ -669,7 +805,7 @@
             dialog.classList.add('show');
         }
 
-        /* --- AUTHOR DIALOG FUNCTION (With Tabs & Grid History) --- */
+        /* --- AUTHOR DIALOG FUNCTION --- */
         function openAuthorDialog(authorName, authorLink, authorProfile) {
             currentActiveAuthor = authorName;
 
@@ -677,7 +813,7 @@
             document.getElementById('author-dialog-link').href = authorLink;
             document.getElementById('author-dialog-avatar').src = authorProfile;
 
-            // 1. DATA UNTUK TAB CURRENT
+            // Current Tab Data
             dialogIconsCache = iconsCache.filter(icon => {
                 const iName = icon.author_name || 'Community';
                 return iName === authorName && !icon.is_history;
@@ -687,7 +823,7 @@
             dialogCurrentPage = 0; 
             displayDialogIcons();
 
-            // 2. DATA UNTUK TAB HISTORY
+            // History Tab Data
             const authorHistoryIcons = iconsCache.filter(icon => {
                 const iName = icon.author_name || 'Community';
                 return iName === authorName && icon.is_history;
@@ -699,9 +835,7 @@
                 histContainer.appendChild(createHistoryItemElement(hIcon, authorName, authorProfile));
             });
 
-            // 3. RESET KE TAB CURRENT SAAT DIBUKA
             switchAuthorTab('current');
-
             document.getElementById('author-dialog-overlay').classList.add('show');
         }
 
@@ -767,6 +901,8 @@
                 const data = await response.json();
                 iconsCache = data.icons;
                 
+                populateSidebar();
+                
                 const currentIconsCount = iconsCache.filter(i => !i.is_history).length;
                 updatePageTitleAndMeta(currentIconsCount);
                 
@@ -779,7 +915,11 @@
 
         function filterIcons(searchTerm) {
             currentSearchTerm = searchTerm;
-            let filteredIcons = iconsCache.filter(icon => !icon.is_history && formatIconName(icon.name).toLowerCase().includes(searchTerm.toLowerCase()));
+            let filteredIcons = iconsCache.filter(icon => {
+                const searchMatch = formatIconName(icon.name).toLowerCase().includes(searchTerm.toLowerCase());
+                const authorMatch = currentAuthorFilter === '' || (icon.author_name || 'Community') === currentAuthorFilter;
+                return !icon.is_history && searchMatch && authorMatch;
+            });
             filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
             currentPage = 0;
             displayIcons(filteredIcons, true);
@@ -787,10 +927,7 @@
 
         function sortIcons(sortOption) {
             currentSortOption = sortOption;
-            let filteredIcons = iconsCache.filter(icon => !icon.is_history && formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase()));
-            filteredIcons = sortIconsInternal(filteredIcons, sortOption);
-            currentPage = 0;
-            displayIcons(filteredIcons, true);
+            filterIcons(currentSearchTerm); 
         }
 
         function sortIconsInternal(icons, sortOption) {
@@ -1039,7 +1176,11 @@
         window.addEventListener('scroll', () => {
             const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
             if (scrollTop + clientHeight >= scrollHeight - 48) {
-                let filteredIcons = iconsCache.filter(icon => !icon.is_history && formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase()));
+                let filteredIcons = iconsCache.filter(icon => {
+                    const searchMatch = formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase());
+                    const authorMatch = currentAuthorFilter === '' || (icon.author_name || 'Community') === currentAuthorFilter;
+                    return !icon.is_history && searchMatch && authorMatch;
+                });
                 filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
                 if ((currentPage + 1) * iconsPerPage < filteredIcons.length) {
                     currentPage++;
