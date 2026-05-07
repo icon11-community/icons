@@ -574,7 +574,7 @@
             const authorCounts = {};
             iconsCache.forEach(icon => {
                 if (!icon.is_history) {
-                    const author = icon.author_name || 'Community';
+                    const author = icon.author || 'Community';
                     authorCounts[author] = (authorCounts[author] || 0) + 1;
                 }
             });
@@ -610,7 +610,7 @@
             const iconItem = document.createElement('div');
             iconItem.classList.add('icon-item');
             
-            const authorName = hIcon.author_name || fallbackAuthorName || 'Community';
+            const authorName = hIcon.author || fallbackAuthorName || 'Community';
             const authorProfile = hIcon.author_profile || fallbackAuthorProfile || 'https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/ico/folder11.ico';
             const formattedName = formatIconName(hIcon.name);
 
@@ -815,7 +815,7 @@
 
             // Current Tab Data
             dialogIconsCache = iconsCache.filter(icon => {
-                const iName = icon.author_name || 'Community';
+                const iName = icon.author || 'Community';
                 return iName === authorName && !icon.is_history;
             });
             const currentContainer = document.getElementById('author-icons-container');
@@ -825,7 +825,7 @@
 
             // History Tab Data
             const authorHistoryIcons = iconsCache.filter(icon => {
-                const iName = icon.author_name || 'Community';
+                const iName = icon.author || 'Community';
                 return iName === authorName && icon.is_history;
             });
             const histContainer = document.getElementById('author-history-container');
@@ -917,7 +917,7 @@
             currentSearchTerm = searchTerm;
             let filteredIcons = iconsCache.filter(icon => {
                 const searchMatch = formatIconName(icon.name).toLowerCase().includes(searchTerm.toLowerCase());
-                const authorMatch = currentAuthorFilter === '' || (icon.author_name || 'Community') === currentAuthorFilter;
+                const authorMatch = currentAuthorFilter === '' || (icon.author || 'Community') === currentAuthorFilter;
                 return !icon.is_history && searchMatch && authorMatch;
             });
             filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
@@ -953,7 +953,7 @@
             const iconItem = document.createElement('div');
             iconItem.classList.add('icon-item');
             
-            const authorName = icon.author_name || 'Community';
+            const authorName = icon.author || 'Community';
             const authorLink = icon.author_link || icon.author || 'https://github.com/icon11-community';
             const authorProfile = icon.author_profile || 'https://raw.githubusercontent.com/icon11-community/Folder-Ico/main/ico/folder11.ico';
             const formattedName = formatIconName(icon.name);
@@ -1178,7 +1178,7 @@
             if (scrollTop + clientHeight >= scrollHeight - 48) {
                 let filteredIcons = iconsCache.filter(icon => {
                     const searchMatch = formatIconName(icon.name).toLowerCase().includes(currentSearchTerm.toLowerCase());
-                    const authorMatch = currentAuthorFilter === '' || (icon.author_name || 'Community') === currentAuthorFilter;
+                    const authorMatch = currentAuthorFilter === '' || (icon.author || 'Community') === currentAuthorFilter;
                     return !icon.is_history && searchMatch && authorMatch;
                 });
                 filteredIcons = sortIconsInternal(filteredIcons, currentSortOption);
